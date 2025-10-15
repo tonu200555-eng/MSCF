@@ -3,13 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MSC Demurrage Portal | Professional Edition</title>
+    <meta name="description" content="MSC Demurrage Portal - Professional Container Tracking System">
+    <meta name="robots" content="noindex, nofollow">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#0062ff">
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:;">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    
+    <title>MSC Demurrage Portal | Secure Portal</title>
+    
+    <link rel="icon" type="image/png" href="https://www.msc.com/favicon-32x32.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" xintegrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    
     <style>
-        /* --- World-Class Design System --- */
+        /* --- Production-Ready Design System --- */
         :root {
             --primary: #0062ff;
             --primary-dark: #0050d8;
@@ -45,6 +58,7 @@
             line-height: 1.6;
             overflow-x: hidden;
             position: relative;
+            min-height: 100vh;
         }
 
         /* Animated Background */
@@ -96,8 +110,8 @@
             font-size: 1.5rem;
             font-weight: 700;
             background: var(--gradient-primary);
-            -webkit-background-clip: text; /* Vendor prefix for compatibility */
-            background-clip: text; /* Standard property */
+            -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: -0.5px;
         }
@@ -116,6 +130,7 @@
         .nav-menu {
             display: flex;
             gap: 0.5rem;
+            align-items: center;
         }
 
         .nav-item {
@@ -144,6 +159,29 @@
         .nav-item i {
             margin-right: 0.5rem;
             font-size: 0.9rem;
+        }
+
+        /* User Info */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-hover);
+            border-radius: 0.5rem;
+            margin-left: 1rem;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
         }
 
         /* Quick Actions Bar */
@@ -176,6 +214,11 @@
             background: var(--primary);
             color: white;
             transform: scale(1.1);
+        }
+
+        .quick-action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         /* Main Content */
@@ -254,6 +297,10 @@
             background: rgba(0, 98, 255, 0.05);
         }
 
+        .form-input.error {
+            border-color: var(--danger);
+        }
+
         .search-icon {
             position: absolute;
             left: 1rem;
@@ -299,6 +346,11 @@
             box-shadow: var(--shadow-lg);
         }
 
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
         .btn-secondary {
             background: transparent;
             border: 2px solid var(--primary);
@@ -308,6 +360,46 @@
         .btn-secondary:hover {
             background: var(--primary);
             color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger) 0%, #ff6b6b 100%);
+        }
+
+        /* Login Form */
+        .login-card {
+            max-width: 400px;
+            margin: 2rem auto;
+            padding: 2.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .form-input-full {
+            width: 100%;
+            background: var(--bg-dark);
+            border: 2px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.875rem 1rem;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-input-full:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(0, 98, 255, 0.05);
         }
 
         /* Results Display */
@@ -441,12 +533,44 @@
             color: var(--primary-light);
         }
 
+        .status-warning {
+            background: rgba(255, 152, 0, 0.1);
+            border: 1px solid rgba(255, 152, 0, 0.3);
+            color: var(--warning);
+        }
+
         /* Loading Animation */
         .loading {
             display: inline-block;
             width: 20px;
             height: 20px;
             border: 3px solid var(--border);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 14, 39, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--border);
             border-radius: 50%;
             border-top-color: var(--primary);
             animation: spin 1s linear infinite;
@@ -507,11 +631,17 @@
         }
 
         /* Data Table */
+        .data-table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
         .data-table {
             width: 100%;
             background: var(--bg-dark);
             border-radius: 0.75rem;
             overflow: hidden;
+            border-collapse: collapse;
         }
 
         .data-table th {
@@ -523,12 +653,14 @@
             font-size: 0.875rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            white-space: nowrap;
         }
 
         .data-table td {
             padding: 1rem;
             border-top: 1px solid var(--border);
             color: var(--text-primary);
+            white-space: nowrap;
         }
 
         .data-table tr:hover {
@@ -541,6 +673,7 @@
             gap: 1rem;
             justify-content: center;
             margin-top: 2rem;
+            flex-wrap: wrap;
         }
 
         /* Stats Dashboard */
@@ -571,7 +704,31 @@
             margin-top: 0.5rem;
         }
 
-        /* Print Styles - Optimized for Single Page */
+        /* Session Timer */
+        .session-timer {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: var(--bg-card);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border);
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            display: none;
+            z-index: 999;
+        }
+
+        .session-timer.active {
+            display: block;
+        }
+
+        .session-timer.warning {
+            border-color: var(--warning);
+            color: var(--warning);
+        }
+
+        /* Print Styles */
         @media print {
             * {
                 margin: 0 !important;
@@ -646,6 +803,10 @@
             .nav-badge {
                 display: none;
             }
+
+            .user-info {
+                display: none;
+            }
             
             .main-content {
                 padding: 80px 1rem 1rem;
@@ -689,17 +850,6 @@
             to { opacity: 1; }
         }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
         /* Page Transitions */
         .page-view {
             display: none;
@@ -736,50 +886,111 @@
             opacity: 1;
             bottom: calc(100% + 0.5rem);
         }
+
+        /* Error Message */
+        .error-text {
+            color: var(--danger);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .error-text.show {
+            display: block;
+        }
     </style>
 </head>
 <body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Session Timer -->
+    <div class="session-timer" id="sessionTimer">
+        Session expires in: <span id="sessionTime">30:00</span>
+    </div>
+
     <!-- Professional Navigation -->
     <header class="main-header no-print">
         <nav class="nav-container">
             <div class="nav-brand">
                 <div class="nav-logo">MSC</div>
-                <span class="nav-badge">PRO</span>
+                <span class="nav-badge">SECURE</span>
             </div>
             <div class="nav-menu">
-                <button class="nav-item active" id="nav-portal">
+                <button class="nav-item active" id="nav-portal" aria-label="Agent Portal" disabled>
                     <i class="fas fa-search"></i>Agent Portal
                 </button>
-                <button class="nav-item" id="nav-admin">
+                <button class="nav-item" id="nav-admin" aria-label="Admin Panel" disabled>
                     <i class="fas fa-cog"></i>Admin
                 </button>
-                <button class="nav-item" id="nav-help">
+                <button class="nav-item" id="nav-help" aria-label="Help" disabled>
                     <i class="fas fa-question-circle"></i>Help
                 </button>
+                <div class="user-info" id="userInfo" style="display: none;">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <span id="userName">User</span>
+                    <button class="nav-item" id="logoutBtn" aria-label="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
             </div>
         </nav>
     </header>
 
     <!-- Quick Actions -->
     <div class="quick-actions no-print">
-        <button class="quick-action-btn tooltip" data-tooltip="Print Report" id="print-btn">
+        <button class="quick-action-btn tooltip" data-tooltip="Print Report" id="print-btn" aria-label="Print" disabled>
             <i class="fas fa-print"></i>
         </button>
-        <button class="quick-action-btn tooltip" data-tooltip="Export PDF" id="pdf-btn">
+        <button class="quick-action-btn tooltip" data-tooltip="Export PDF" id="pdf-btn" aria-label="Export PDF" disabled>
             <i class="fas fa-file-pdf"></i>
         </button>
-        <button class="quick-action-btn tooltip" data-tooltip="Export Data" id="export-btn">
+        <button class="quick-action-btn tooltip" data-tooltip="Export Data" id="export-btn" aria-label="Export Data" disabled>
             <i class="fas fa-download"></i>
         </button>
-        <button class="quick-action-btn tooltip" data-tooltip="Dark Mode" id="theme-btn">
+        <button class="quick-action-btn tooltip" data-tooltip="Dark Mode" id="theme-btn" aria-label="Toggle Theme">
             <i class="fas fa-moon"></i>
         </button>
     </div>
 
     <!-- Main Content -->
     <main class="main-content">
+        <!-- LOGIN VIEW -->
+        <div id="login-view" class="page-view active">
+            <div class="card login-card">
+                <div class="card-header">
+                    <h2 class="card-title">Secure Login</h2>
+                </div>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" id="username" class="form-input-full" required autocomplete="username">
+                        <span class="error-text" id="username-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" class="form-input-full" required autocomplete="current-password">
+                        <span class="error-text" id="password-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="remember"> Remember me
+                        </label>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">
+                        <i class="fas fa-lock"></i> Login
+                    </button>
+                </form>
+                <p style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-size: 0.875rem;">
+                    Contact IT support for access: support@msc.com
+                </p>
+            </div>
+        </div>
+
         <!-- AGENT PORTAL -->
-        <div id="portal-view" class="page-view active">
+        <div id="portal-view" class="page-view">
             <div class="print-container">
                 <header style="text-align: center; margin-bottom: 2rem;">
                     <h1 style="font-size: 2rem; font-weight: 700; background: var(--gradient-primary); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
@@ -804,12 +1015,16 @@
                                 class="form-input" 
                                 placeholder="Enter BL Number (e.g., MSCUBKG1200440)"
                                 autocomplete="off"
+                                pattern="[A-Za-z0-9]+"
+                                maxlength="20"
                                 required
+                                aria-label="BL Number Search"
                             >
-                            <button type="submit" class="btn">
+                            <button type="submit" class="btn" id="searchBtn">
                                 Search <i class="fas fa-arrow-right" style="margin-left: 0.5rem;"></i>
                             </button>
                         </div>
+                        <span class="error-text" id="search-error"></span>
                     </form>
                     <div class="recent-searches" id="recent-searches" style="display: none;">
                         <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 0.5rem;">Recent Searches:</p>
@@ -826,7 +1041,7 @@
                                 <i class="fas fa-ship" style="margin-right: 0.5rem;"></i>
                                 Container Details
                             </h2>
-                            <button class="btn btn-secondary no-print" onclick="copyToClipboard()">
+                            <button class="btn btn-secondary no-print" onclick="SecureApp.copyToClipboard()">
                                 <i class="fas fa-copy"></i> Copy
                             </button>
                         </div>
@@ -879,10 +1094,10 @@
                         <button class="btn btn-secondary" onclick="window.print()">
                             <i class="fas fa-print"></i> Print
                         </button>
-                        <button class="btn" onclick="generatePDF()">
+                        <button class="btn" onclick="SecureApp.generatePDF()">
                             <i class="fas fa-file-pdf"></i> Export PDF
                         </button>
-                        <button class="btn btn-secondary" onclick="shareResult()">
+                        <button class="btn btn-secondary" onclick="SecureApp.shareResult()">
                             <i class="fas fa-share"></i> Share
                         </button>
                     </div>
@@ -934,7 +1149,7 @@
                     <p style="color: var(--text-secondary); margin: 1rem 0;">
                         Supports CSV, Excel (.xlsx, .xls), and JSON files
                     </p>
-                    <input type="file" id="file-input" accept=".csv,.xlsx,.xls,.json" style="display: none;">
+                    <input type="file" id="file-input" accept=".csv,.xlsx,.xls,.json" style="display: none;" multiple>
                     <button class="btn" onclick="document.getElementById('file-input').click()">
                         Select Files
                     </button>
@@ -950,13 +1165,13 @@
                 </div>
                 <form id="manual-form">
                     <div class="form-grid">
-                        <input type="text" class="form-input" name="BL_Number" placeholder="BL Number *" required>
+                        <input type="text" class="form-input" name="BL_Number" placeholder="BL Number *" pattern="[A-Za-z0-9]+" required>
                         <input type="text" class="form-input" name="Name of Vessel" placeholder="Name of Vessel *" required>
                         <input type="text" class="form-input" name="Voyage Number" placeholder="Voyage Number">
                         <input type="date" class="form-input" name="Date of Arrival" placeholder="Date of Arrival">
                         <input type="date" class="form-input" name="From Date" placeholder="From Date">
                         <input type="date" class="form-input" name="To Date" placeholder="To Date">
-                        <input type="text" class="form-input" name="Total Demurrage amount" placeholder="Total Amount (USD)">
+                        <input type="number" class="form-input" name="Total Demurrage amount" placeholder="Total Amount (USD)" step="0.01" min="0">
                         <input type="text" class="form-input" name="Container_ID" placeholder="Container ID">
                     </div>
                     <div class="action-bar">
@@ -978,18 +1193,42 @@
                     </h2>
                 </div>
                 <div class="action-bar">
-                    <button class="btn btn-secondary" onclick="exportData()">
+                    <button class="btn btn-secondary" onclick="SecureApp.exportData()">
                         <i class="fas fa-download"></i> Export All Data
                     </button>
-                    <button class="btn btn-secondary" onclick="backupData()">
+                    <button class="btn btn-secondary" onclick="SecureApp.backupData()">
                         <i class="fas fa-shield-alt"></i> Backup
                     </button>
-                    <button class="btn" style="background: var(--gradient-success);" onclick="viewData()">
+                    <button class="btn" style="background: var(--gradient-success);" onclick="SecureApp.viewData()">
                         <i class="fas fa-eye"></i> View Records
                     </button>
-                    <button class="btn" style="background: linear-gradient(135deg, var(--danger) 0%, #ff6b6b 100%);" onclick="clearData()">
+                    <button class="btn btn-danger" onclick="SecureApp.clearData()">
                         <i class="fas fa-trash"></i> Clear All
                     </button>
+                </div>
+            </div>
+
+            <!-- Data Table View -->
+            <div class="card" id="data-view" style="display: none;">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-table"></i> Records View
+                    </h2>
+                </div>
+                <div class="data-table-container">
+                    <table class="data-table" id="dataTable">
+                        <thead>
+                            <tr>
+                                <th>BL Number</th>
+                                <th>Vessel</th>
+                                <th>Voyage</th>
+                                <th>Arrival</th>
+                                <th>Amount</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dataTableBody"></tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -1005,6 +1244,7 @@
                 <div style="padding: 1rem 0;">
                     <h3 style="color: var(--primary-light); margin-bottom: 1rem;">Quick Start Guide</h3>
                     <ol style="color: var(--text-secondary); line-height: 2;">
+                        <li>Login with your credentials to access the portal</li>
                         <li>Enter a BL Number in the search box to find container details</li>
                         <li>View comprehensive demurrage information instantly</li>
                         <li>Export reports as PDF or print directly</li>
@@ -1038,479 +1278,548 @@
                         Phone: <strong>+1-800-MSC-SHIP</strong><br>
                         Available: Monday-Friday, 8:00 AM - 6:00 PM EST
                     </p>
+
+                    <h3 style="color: var(--primary-light); margin: 2rem 0 1rem;">Security Guidelines</h3>
+                    <ul style="color: var(--text-secondary); line-height: 2; list-style-position: inside;">
+                        <li>Never share your login credentials.</li>
+                        <li>Always logout when finished.</li>
+                        <li>Report suspicious activity immediately.</li>
+                        <li>Use strong passwords with mixed characters.</li>
+                        <li>Enable two-factor authentication when available.</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- External Scripts with Integrity Checks -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" xintegrity="sha512-dfX5uYVXzyU8+KHqj8bjo7UkOdg18PaOtpa48djpNbZHwExddghZ+ZmzWT06R5v6NSk3ZUfsH6FNEDepLx9hPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" xintegrity="sha512-r22gChDnGvBylk90+2e/ycr3RVrDi8DIOkIGNhJlKfuyQM4tIRAI062MaV8sfjQKYVGjOBaZBOA87z+IhZE9DA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" xintegrity="sha512-qZvrmS2ekKPF2mSZNvyHOLNbTdILn7S1CiGupRSp8OUPZG/1dXEjJEnxFVVbZeoO2TRmAs7bS+pNldApcvY+zQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" xintegrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibVocXgZWGpaUSb磯部寛子==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
     <script>
-        // Global State Management
-        const AppState = {
-            data: [],
-            recentSearches: [],
-            searchHistory: [],
-            currentView: 'portal',
-            adminAuth: false,
-            settings: {
-                theme: 'dark',
-                autoSave: true,
-                notifications: true
-            }
-        };
+        const SecureApp = (function() {
+            'use strict';
 
-        // Initialize Application
-        document.addEventListener('DOMContentLoaded', () => {
-            initializeApp();
-            setupEventListeners();
-            setupKeyboardShortcuts();
-            loadData();
-            updateStats();
-        });
+            const CONFIG = {
+                SESSION_TIMEOUT: 30 * 60 * 1000,
+                SESSION_WARNING: 5 * 60 * 1000,
+                MAX_LOGIN_ATTEMPTS: 5,
+                RATE_LIMIT_WINDOW: 60000,
+                MAX_REQUESTS_PER_WINDOW: 20
+            };
 
-        function initializeApp() {
-            // Load saved state
-            const savedData = localStorage.getItem('mscDemurrageData');
-            const savedSearches = localStorage.getItem('mscRecentSearches');
-            const savedSettings = localStorage.getItem('mscSettings');
-            
-            if (savedData) AppState.data = JSON.parse(savedData);
-            if (savedSearches) AppState.recentSearches = JSON.parse(savedSearches);
-            if (savedSettings) AppState.settings = JSON.parse(savedSettings);
-            
-            // Update UI
-            updateRecentSearches();
-        }
+            const State = {
+                user: null, data: [], recentSearches: [], searchHistory: [],
+                currentView: 'login', loginAttempts: 0, sessionTimer: null,
+                sessionTimeout: null, requestCount: 0,
+                requestResetTime: Date.now() + CONFIG.RATE_LIMIT_WINDOW
+            };
 
-        function setupEventListeners() {
-            // Navigation
-            document.getElementById('nav-portal').addEventListener('click', () => switchView('portal'));
-            document.getElementById('nav-admin').addEventListener('click', () => switchView('admin'));
-            document.getElementById('nav-help').addEventListener('click', () => switchView('help'));
-            
-            // Portal Search
-            document.getElementById('search-form').addEventListener('submit', handleSearch);
-            
-            // Admin Functions
-            document.getElementById('manual-form').addEventListener('submit', handleManualEntry);
-            setupFileUpload();
-            
-            // Quick Actions
-            document.getElementById('print-btn').addEventListener('click', () => window.print());
-            document.getElementById('pdf-btn').addEventListener('click', generatePDF);
-            document.getElementById('export-btn').addEventListener('click', exportData);
-            document.getElementById('theme-btn').addEventListener('click', toggleTheme);
-        }
-
-        function setupKeyboardShortcuts() {
-            document.addEventListener('keydown', (e) => {
-                if (e.ctrlKey || e.metaKey) {
-                    switch(e.key) {
-                        case 'k':
-                            e.preventDefault();
-                            document.getElementById('bl-search').focus();
-                            break;
-                        case 'p':
-                            e.preventDefault();
-                            window.print();
-                            break;
-                        case 'e':
-                            e.preventDefault();
-                            generatePDF();
-                            break;
-                        case '/':
-                            e.preventDefault();
-                            switchView('help');
-                            break;
-                    }
+            function init() {
+                loadData();
+                checkExistingSession();
+                loadRecentSearches();
+                setupEventListeners();
+                setupKeyboardShortcuts();
+                setupFileUpload();
+                if (State.data.length === 0) {
+                    State.data = [
+                        { "BL_Number": "MSCUBKG1200440", "Name of Vessel": "MSC OSCAR", "Voyage Number": "425N", "Date of Arrival": "2025-09-28", "From Date": "2025-09-25", "To Date": "2025-09-28", "Total Demurrage amount": "405.00" },
+                        { "BL_Number": "MSCUBKG1203641", "Name of Vessel": "MSC GULSUN", "Voyage Number": "432W", "Date of Arrival": "2025-10-02", "From Date": "2025-09-28", "To Date": "2025-10-02", "Total Demurrage amount": "652.00" }
+                    ];
+                    saveData();
                 }
-            });
-        }
+            }
 
-        function switchView(view) {
-            if (view === 'admin' && !AppState.adminAuth) {
-                const password = prompt('Enter admin password:');
-                if (password !== 'MSC2025') {
-                    showStatus('Invalid password', 'error');
+            function encrypt(text) { try { return btoa(encodeURIComponent(text)); } catch (e) { console.error('Encryption failed:', e); return text; } }
+            function decrypt(text) { try { return decodeURIComponent(atob(text)); } catch (e) { console.error('Decryption failed:', e); return text; } }
+            function sanitizeInput(input) {
+                if (typeof input !== 'string') return input;
+                const div = document.createElement('div');
+                div.textContent = input;
+                return div.innerHTML;
+            }
+            function validateBLNumber(bl) { return /^[A-Z0-9]{10,20}$/.test(bl); }
+
+            function checkRateLimit() {
+                const now = Date.now();
+                if (now > State.requestResetTime) {
+                    State.requestCount = 0;
+                    State.requestResetTime = now + CONFIG.RATE_LIMIT_WINDOW;
+                }
+                if (State.requestCount >= CONFIG.MAX_REQUESTS_PER_WINDOW) {
+                    showStatus('Rate limit exceeded. Please wait a moment.', 'warning');
+                    return false;
+                }
+                State.requestCount++;
+                return true;
+            }
+
+            function startSession(user, remember) {
+                State.user = user;
+                State.sessionTimeout = Date.now() + CONFIG.SESSION_TIMEOUT;
+                const sessionData = encrypt(JSON.stringify({ user, timeout: State.sessionTimeout }));
+                if (remember) { localStorage.setItem('msc_session', sessionData); } 
+                else { sessionStorage.setItem('msc_session', sessionData); }
+                
+                updateSessionTimer();
+                State.sessionTimer = setInterval(updateSessionTimer, 1000);
+                
+                document.getElementById('userInfo').style.display = 'flex';
+                document.getElementById('userName').textContent = user.username;
+                document.getElementById('userAvatar').textContent = user.username[0].toUpperCase();
+                document.getElementById('sessionTimer').classList.add('active');
+                document.querySelectorAll('.nav-item, .quick-action-btn').forEach(el => el.disabled = false);
+            }
+
+            function updateSessionTimer() {
+                const remaining = State.sessionTimeout - Date.now();
+                if (remaining <= 0) {
+                    logout('Session expired due to inactivity');
                     return;
                 }
-                AppState.adminAuth = true;
+                const minutes = Math.floor(remaining / 60000);
+                const seconds = Math.floor((remaining % 60000) / 1000);
+                const timerEl = document.getElementById('sessionTimer');
+                document.getElementById('sessionTime').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                timerEl.classList.toggle('warning', remaining <= CONFIG.SESSION_WARNING);
+                if (Math.floor(remaining / 1000) === Math.floor(CONFIG.SESSION_WARNING / 1000)) {
+                    showStatus('Your session will expire in 5 minutes', 'warning');
+                }
             }
-            
-            document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            
-            document.getElementById(`${view}-view`).classList.add('active');
-            document.getElementById(`nav-${view}`).classList.add('active');
-            
-            AppState.currentView = view;
-            
-            if (view === 'admin') updateStats();
-        }
 
-        function handleSearch(e) {
-            e.preventDefault();
-            const blNumber = document.getElementById('bl-search').value.trim().toUpperCase();
-            
-            document.getElementById('search-loading').style.display = 'inline-block';
-            
-            setTimeout(() => {
-                performSearch(blNumber);
-                document.getElementById('search-loading').style.display = 'none';
-            }, 500);
-        }
+            function extendSession() {
+                if (State.user) {
+                    State.sessionTimeout = Date.now() + CONFIG.SESSION_TIMEOUT;
+                    document.getElementById('sessionTimer').classList.remove('warning');
+                    const sessionData = encrypt(JSON.stringify({ user: State.user, timeout: State.sessionTimeout }));
+                    if (localStorage.getItem('msc_session')) localStorage.setItem('msc_session', sessionData);
+                    else sessionStorage.setItem('msc_session', sessionData);
+                }
+            }
 
-        function performSearch(blNumber) {
-            const record = AppState.data.find(item => 
-                item.BL_Number && item.BL_Number.toUpperCase() === blNumber
-            );
-            
-            if (record) {
-                displayResults(record);
-                addToRecentSearches(blNumber);
-                AppState.searchHistory.push({
-                    bl: blNumber,
-                    timestamp: new Date().toISOString()
-                });
-                showStatus('Record found successfully', 'success');
-            } else {
+            function logout(message = 'Logged out successfully') {
+                clearInterval(State.sessionTimer);
+                State.user = null;
+                State.sessionTimeout = null;
+                sessionStorage.removeItem('msc_session');
+                localStorage.removeItem('msc_session');
+                document.getElementById('userInfo').style.display = 'none';
+                document.getElementById('sessionTimer').classList.remove('active');
+                document.querySelectorAll('.nav-item, .quick-action-btn').forEach(el => el.disabled = true);
+                switchView('login');
+                showStatus(message, 'info');
+                document.getElementById('password').value = '';
                 hideResults();
-                showStatus(`No record found for BL Number: ${blNumber}`, 'error');
             }
-        }
 
-        function displayResults(record) {
-            document.getElementById('res-bl').textContent = record.BL_Number || 'N/A';
-            document.getElementById('res-vessel-name').textContent = record['Name of Vessel'] || record.Vessel_Name || 'N/A';
-            document.getElementById('res-voyage').textContent = record['Voyage Number'] || record.Voyage || 'N/A';
-            document.getElementById('res-arrival').textContent = formatDate(record['Date of Arrival'] || record.Discharge_Date);
-            document.getElementById('res-from-date').textContent = formatDate(record['From Date'] || record.Demurrage_Start);
-            document.getElementById('res-to-date').textContent = formatDate(record['To Date'] || record.Demurrage_End);
-            
-            const amount = record['Total Demurrage amount'] || record.Total_Due_USD || '0';
-            const formattedAmount = formatCurrency(amount);
-            document.getElementById('res-total').textContent = formattedAmount;
-            
-            const container = document.getElementById('results-container');
-            container.style.display = 'block';
-            setTimeout(() => container.classList.add('visible'), 50);
-        }
-
-        function hideResults() {
-            const container = document.getElementById('results-container');
-            container.classList.remove('visible');
-            setTimeout(() => container.style.display = 'none', 300);
-        }
-
-        function addToRecentSearches(blNumber) {
-            AppState.recentSearches = AppState.recentSearches.filter(s => s !== blNumber);
-            AppState.recentSearches.unshift(blNumber);
-            AppState.recentSearches = AppState.recentSearches.slice(0, 5);
-            localStorage.setItem('mscRecentSearches', JSON.stringify(AppState.recentSearches));
-            updateRecentSearches();
-        }
-
-        function updateRecentSearches() {
-            const container = document.getElementById('recent-searches');
-            const list = document.getElementById('recent-list');
-            
-            if (AppState.recentSearches.length === 0) {
-                container.style.display = 'none';
-                return;
-            }
-            
-            container.style.display = 'block';
-            list.innerHTML = AppState.recentSearches.map(bl => 
-                `<span class="recent-item" onclick="quickSearch('${bl}')">${bl}</span>`
-            ).join('');
-        }
-
-        function quickSearch(blNumber) {
-            document.getElementById('bl-search').value = blNumber;
-            performSearch(blNumber);
-        }
-
-        function handleManualEntry(e) {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            const record = Object.fromEntries(formData.entries());
-            
-            AppState.data.push(record);
-            saveData();
-            e.target.reset();
-            showStatus(`Record added for BL: ${record.BL_Number}`, 'success');
-            updateStats();
-        }
-
-        function setupFileUpload() {
-            const zone = document.getElementById('upload-zone');
-            const input = document.getElementById('file-input');
-            
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                zone.addEventListener(eventName, preventDefaults, false);
-            });
-            
-            function preventDefaults(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-            
-            ['dragenter', 'dragover'].forEach(eventName => {
-                zone.addEventListener(eventName, () => zone.classList.add('active'), false);
-            });
-            
-            ['dragleave', 'drop'].forEach(eventName => {
-                zone.addEventListener(eventName, () => zone.classList.remove('active'), false);
-            });
-            
-            zone.addEventListener('drop', handleDrop, false);
-            input.addEventListener('change', (e) => handleFiles(e.target.files));
-        }
-
-        function handleDrop(e) {
-            const files = e.dataTransfer.files;
-            handleFiles(files);
-        }
-
-        function handleFiles(files) {
-            [...files].forEach(processFile);
-        }
-
-        function processFile(file) {
-            const reader = new FileReader();
-            
-            if (file.name.endsWith('.csv')) {
-                reader.onload = (e) => {
-                    Papa.parse(e.target.result, {
-                        header: true,
-                        complete: (results) => {
-                            AppState.data = [...AppState.data, ...results.data];
-                            saveData();
-                            showStatus(`Imported ${results.data.length} records from CSV`, 'success');
-                            updateStats();
+            function checkExistingSession() {
+                const sessionData = localStorage.getItem('msc_session') || sessionStorage.getItem('msc_session');
+                if (sessionData) {
+                    try {
+                        const session = JSON.parse(decrypt(sessionData));
+                        if (session.timeout > Date.now()) {
+                            startSession(session.user, !!localStorage.getItem('msc_session'));
+                            switchView('portal');
+                        } else {
+                            logout('Your previous session has expired');
                         }
-                    });
-                };
-                reader.readAsText(file);
-            } else if (file.name.endsWith('.json')) {
-                reader.onload = (e) => {
-                    const data = JSON.parse(e.target.result);
-                    AppState.data = [...AppState.data, ...data];
-                    saveData();
-                    showStatus(`Imported ${data.length} records from JSON`, 'success');
-                    updateStats();
-                };
-                reader.readAsText(file);
-            } else if (file.name.match(/\.xls[x]?$/)) {
-                reader.onload = (e) => {
-                    const workbook = XLSX.read(e.target.result, { type: 'binary' });
-                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                    const data = XLSX.utils.sheet_to_json(firstSheet);
-                    AppState.data = [...AppState.data, ...data];
-                    saveData();
-                    showStatus(`Imported ${data.length} records from Excel`, 'success');
-                    updateStats();
-                };
-                reader.readAsBinaryString(file);
-            }
-        }
-
-        function updateStats() {
-            document.getElementById('total-records').textContent = AppState.data.length;
-            document.getElementById('today-searches').textContent = 
-                AppState.searchHistory.filter(s => 
-                    new Date(s.timestamp).toDateString() === new Date().toDateString()
-                ).length;
-            
-            const vessels = [...new Set(AppState.data.map(d => d['Name of Vessel'] || d.Vessel_Name))];
-            document.getElementById('active-vessels').textContent = vessels.length;
-            
-            const totalAmount = AppState.data.reduce((sum, record) => {
-                const amount = parseFloat(record['Total Demurrage amount'] || record.Total_Due_USD || 0);
-                return sum + amount;
-            }, 0);
-            document.getElementById('total-amount').textContent = formatCurrency(totalAmount);
-        }
-
-        function formatDate(dateStr) {
-            if (!dateStr) return 'N/A';
-            const date = new Date(dateStr);
-            return date.toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'short', 
-                day: 'numeric' 
-            });
-        }
-
-        function formatCurrency(amount) {
-            const num = parseFloat(amount) || 0;
-            return new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 2
-            }).format(num);
-        }
-
-        function saveData() {
-            localStorage.setItem('mscDemurrageData', JSON.stringify(AppState.data));
-        }
-
-        function loadData() {
-            const saved = localStorage.getItem('mscDemurrageData');
-            if (saved) {
-                AppState.data = JSON.parse(saved);
-            }
-        }
-
-        function exportData() {
-            const dataStr = JSON.stringify(AppState.data, null, 2);
-            const blob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `msc_data_${new Date().toISOString().split('T')[0]}.json`;
-            a.click();
-            showStatus('Data exported successfully', 'success');
-        }
-
-        function backupData() {
-            const backup = {
-                data: AppState.data,
-                searches: AppState.recentSearches,
-                history: AppState.searchHistory,
-                timestamp: new Date().toISOString()
-            };
-            localStorage.setItem('mscBackup', JSON.stringify(backup));
-            showStatus('Backup created successfully', 'success');
-        }
-
-        function clearData() {
-            if (confirm('Are you sure you want to delete all data? This cannot be undone.')) {
-                if (confirm('This will permanently delete all records. Continue?')) {
-                    AppState.data = [];
-                    saveData();
-                    updateStats();
-                    showStatus('All data has been cleared', 'error');
+                    } catch (e) {
+                        logout('Session data corrupted. Please log in again.');
+                    }
                 }
             }
-        }
-
-        function viewData() {
-            console.table(AppState.data);
-            showStatus(`Viewing ${AppState.data.length} records in console`, 'info');
-        }
-
-        function generatePDF() {
-            const { jsPDF } = window.jspdf;
-            const element = document.getElementById('results-container');
             
-            if (!element.classList.contains('visible')) {
-                showStatus('No data to export. Please search for a record first.', 'error');
-                return;
-            }
-            
-            html2canvas(element, {
-                scale: 2,
-                backgroundColor: '#ffffff',
-                logging: false
-            }).then(canvas => {
-                const pdf = new jsPDF('p', 'mm', 'a4');
-                const imgData = canvas.toDataURL('image/png');
-                const imgWidth = 210;
-                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+            function handleLogin(e) {
+                e.preventDefault();
+                if (!checkRateLimit()) return;
+                if (State.loginAttempts >= CONFIG.MAX_LOGIN_ATTEMPTS) {
+                    showStatus('Account locked due to too many failed attempts. Contact support.', 'error');
+                    return;
+                }
+
+                const username = sanitizeInput(document.getElementById('username').value);
+                const password = document.getElementById('password').value;
+                const remember = document.getElementById('remember').checked;
+
+                // DEMO AUTHENTICATION - REPLACE IN PRODUCTION
+                const validUsers = [
+                    { username: 'admin', password: encrypt('Admin@2025'), role: 'admin' },
+                    { username: 'agent', password: encrypt('Agent@2025'), role: 'agent' }
+                ];
+
+                const user = validUsers.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === encrypt(password));
                 
-                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-                pdf.save(`MSC_Demurrage_${document.getElementById('res-bl').textContent}.pdf`);
-                showStatus('PDF generated successfully', 'success');
-            });
-        }
-
-        function copyToClipboard() {
-            const data = {
-                'BL Number': document.getElementById('res-bl').textContent,
-                'Vessel': document.getElementById('res-vessel-name').textContent,
-                'Voyage': document.getElementById('res-voyage').textContent,
-                'Arrival': document.getElementById('res-arrival').textContent,
-                'From': document.getElementById('res-from-date').textContent,
-                'To': document.getElementById('res-to-date').textContent,
-                'Amount': document.getElementById('res-total').textContent
-            };
-            
-            const text = Object.entries(data).map(([k, v]) => `${k}: ${v}`).join('\n');
-            navigator.clipboard.writeText(text);
-            showStatus('Data copied to clipboard', 'success');
-        }
-
-        function shareResult() {
-            if (navigator.share) {
-                const data = {
-                    title: 'MSC Demurrage Report',
-                    text: `BL: ${document.getElementById('res-bl').textContent}\nAmount: ${document.getElementById('res-total').textContent}`,
-                    url: window.location.href
-                };
-                navigator.share(data);
-            } else {
-                copyToClipboard();
-            }
-        }
-
-        function toggleTheme() {
-            // Theme toggle implementation
-            document.body.classList.toggle('light-theme');
-            const icon = document.querySelector('#theme-btn i');
-            icon.classList.toggle('fa-moon');
-            icon.classList.toggle('fa-sun');
-            showStatus('Theme changed', 'info');
-        }
-
-        function showStatus(message, type = 'info') {
-            const statusEl = document.getElementById(`${AppState.currentView}-status`) || 
-                           document.getElementById('portal-status');
-            
-            if (!statusEl) return;
-            
-            statusEl.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check-circle' : 
-                                   type === 'error' ? 'exclamation-circle' : 
-                                   'info-circle'}"></i>
-                ${message}
-            `;
-            statusEl.className = `status-message status-${type}`;
-            statusEl.style.display = 'block';
-            
-            setTimeout(() => {
-                statusEl.style.display = 'none';
-            }, 5000);
-        }
-
-        // Sample data for demo
-        if (AppState.data.length === 0) {
-            AppState.data = [
-                {
-                    "BL_Number": "MSCUBKG1200440",
-                    "Name of Vessel": "MSC OSCAR",
-                    "Voyage Number": "425N",
-                    "Date of Arrival": "2025-09-28",
-                    "From Date": "2025-09-25",
-                    "To Date": "2025-09-28",
-                    "Total Demurrage amount": "405.00"
-                },
-                {
-                    "BL_Number": "MSCUBKG1203641",
-                    "Name of Vessel": "MSC GULSUN",
-                    "Voyage Number": "432W",
-                    "Date of Arrival": "2025-10-02",
-                    "From Date": "2025-09-28",
-                    "To Date": "2025-10-02",
-                    "Total Demurrage amount": "652.00"
+                if (user) {
+                    State.loginAttempts = 0;
+                    startSession(user, remember);
+                    switchView('portal');
+                    showStatus('Login successful', 'success');
+                } else {
+                    State.loginAttempts++;
+                    const attemptsLeft = CONFIG.MAX_LOGIN_ATTEMPTS - State.loginAttempts;
+                    showStatus(`Invalid credentials. ${attemptsLeft > 0 ? `${attemptsLeft} attempts remaining.` : 'Account locked.'}`, 'error');
                 }
-            ];
-            saveData();
-        }
+            }
+
+            function setupEventListeners() {
+                document.getElementById('login-form').addEventListener('submit', handleLogin);
+                document.getElementById('nav-portal').addEventListener('click', () => switchView('portal'));
+                document.getElementById('nav-admin').addEventListener('click', () => switchView('admin'));
+                document.getElementById('nav-help').addEventListener('click', () => switchView('help'));
+                document.getElementById('logoutBtn').addEventListener('click', () => logout());
+                document.getElementById('search-form').addEventListener('submit', handleSearch);
+                document.getElementById('manual-form').addEventListener('submit', handleManualEntry);
+                document.getElementById('print-btn').addEventListener('click', () => window.print());
+                document.getElementById('pdf-btn').addEventListener('click', generatePDF);
+                document.getElementById('export-btn').addEventListener('click', exportData);
+                document.body.addEventListener('mousemove', extendSession, { passive: true, once: true });
+                document.body.addEventListener('keydown', extendSession, { passive: true, once: true });
+            }
+
+            function setupKeyboardShortcuts() {
+                document.addEventListener('keydown', (e) => {
+                    if ((e.ctrlKey || e.metaKey) && State.user) {
+                        switch(e.key) {
+                            case 'k': e.preventDefault(); document.getElementById('bl-search').focus(); break;
+                            case 'p': e.preventDefault(); window.print(); break;
+                            case 'e': e.preventDefault(); generatePDF(); break;
+                            case '/': e.preventDefault(); switchView('help'); break;
+                        }
+                    }
+                });
+            }
+
+            function switchView(view) {
+                if (!State.user && view !== 'login') {
+                    showStatus('Please login first', 'error');
+                    return;
+                }
+                if (view === 'admin' && State.user?.role !== 'admin') {
+                    showStatus('Admin access required', 'error');
+                    return;
+                }
+                
+                document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                
+                document.getElementById(`${view}-view`).classList.add('active');
+                if (view !== 'login') {
+                    document.getElementById(`nav-${view}`).classList.add('active');
+                }
+                State.currentView = view;
+                if (view === 'admin') updateStats();
+                extendSession();
+            }
+
+            function handleSearch(e) {
+                e.preventDefault();
+                const blNumber = document.getElementById('bl-search').value.trim();
+                const searchBtn = document.getElementById('searchBtn');
+                
+                searchBtn.disabled = true;
+                showLoading(true);
+
+                setTimeout(() => {
+                    performSearch(blNumber);
+                    showLoading(false);
+                    searchBtn.disabled = false;
+                }, 500);
+            }
+
+            function performSearch(blNumber) {
+                if (!checkRateLimit()) return;
+                const sanitizedBl = sanitizeInput(blNumber.toUpperCase());
+                if (!validateBLNumber(sanitizedBl)) {
+                    showStatus('Invalid BL Number format. Please use only A-Z, 0-9.', 'error');
+                    document.getElementById('bl-search').classList.add('error');
+                    return;
+                }
+                
+                document.getElementById('bl-search').classList.remove('error');
+                const record = State.data.find(item => item.BL_Number && item.BL_Number.toUpperCase() === sanitizedBl);
+                
+                if (record) {
+                    displayResults(record);
+                    addToRecentSearches(sanitizedBl);
+                    State.searchHistory.push({ bl: sanitizedBl, user: State.user.username, timestamp: new Date().toISOString(), found: true });
+                    showStatus('Record found successfully', 'success');
+                    console.log(`Search performed by ${State.user.username} for ${sanitizedBl} at ${new Date().toISOString()}`);
+                } else {
+                    hideResults();
+                    showStatus(`No record found for BL Number: ${sanitizedBl}`, 'error');
+                    State.searchHistory.push({ bl: sanitizedBl, user: State.user.username, timestamp: new Date().toISOString(), found: false });
+                }
+                extendSession();
+            }
+
+            function displayResults(record) {
+                document.getElementById('res-bl').textContent = sanitizeInput(record.BL_Number || 'N/A');
+                document.getElementById('res-vessel-name').textContent = sanitizeInput(record['Name of Vessel'] || record.Vessel_Name || 'N/A');
+                document.getElementById('res-voyage').textContent = sanitizeInput(record['Voyage Number'] || record.Voyage || 'N/A');
+                document.getElementById('res-arrival').textContent = formatDate(record['Date of Arrival'] || record.Discharge_Date);
+                document.getElementById('res-from-date').textContent = formatDate(record['From Date'] || record.Demurrage_Start);
+                document.getElementById('res-to-date').textContent = formatDate(record['To Date'] || record.Demurrage_End);
+                const amount = record['Total Demurrage amount'] || record.Total_Due_USD || '0';
+                document.getElementById('res-total').textContent = formatCurrency(amount);
+                const container = document.getElementById('results-container');
+                container.style.display = 'block';
+                setTimeout(() => container.classList.add('visible'), 50);
+            }
+            function hideResults() {
+                const container = document.getElementById('results-container');
+                container.classList.remove('visible');
+                setTimeout(() => container.style.display = 'none', 300);
+            }
+
+            function addToRecentSearches(blNumber) {
+                State.recentSearches = State.recentSearches.filter(s => s !== blNumber);
+                State.recentSearches.unshift(blNumber);
+                State.recentSearches = State.recentSearches.slice(0, 5);
+                localStorage.setItem('msc_recent', encrypt(JSON.stringify(State.recentSearches)));
+                updateRecentSearches();
+            }
+
+            function updateRecentSearches() {
+                const container = document.getElementById('recent-searches');
+                const list = document.getElementById('recent-list');
+                if (State.recentSearches.length === 0) {
+                    container.style.display = 'none'; return;
+                }
+                container.style.display = 'block';
+                list.innerHTML = State.recentSearches.map(bl => `<span class="recent-item" onclick="SecureApp.quickSearch('${sanitizeInput(bl)}')">${sanitizeInput(bl)}</span>`).join('');
+            }
+            
+            function quickSearch(bl) {
+                document.getElementById('bl-search').value = bl;
+                handleSearch(new Event('submit'));
+            }
+
+            function handleManualEntry(e) {
+                e.preventDefault();
+                if (State.user?.role !== 'admin') { showStatus('Admin access required', 'error'); return; }
+                const formData = new FormData(e.target);
+                const record = {};
+                for (let [key, value] of formData.entries()) { record[key] = sanitizeInput(value); }
+                if (!validateBLNumber(record.BL_Number)) { showStatus('Invalid BL Number format', 'error'); return; }
+                State.data.push(record);
+                if (saveData()) {
+                    e.target.reset();
+                    showStatus(`Record added for BL: ${record.BL_Number}`, 'success');
+                    updateStats();
+                    console.log(`Manual entry added by ${State.user.username} for ${record.BL_Number} at ${new Date().toISOString()}`);
+                }
+            }
+
+            function setupFileUpload() {
+                const zone = document.getElementById('upload-zone');
+                const input = document.getElementById('file-input');
+                if (!zone || !input) return;
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => zone.addEventListener(eventName, (e) => { e.preventDefault(); e.stopPropagation(); }));
+                ['dragenter', 'dragover'].forEach(eventName => zone.addEventListener(eventName, () => zone.classList.add('active')));
+                ['dragleave', 'drop'].forEach(eventName => zone.addEventListener(eventName, () => zone.classList.remove('active')));
+                zone.addEventListener('drop', (e) => handleFiles(e.dataTransfer.files));
+                input.addEventListener('change', (e) => handleFiles(e.target.files));
+            }
+
+            function handleFiles(files) {
+                if (State.user?.role !== 'admin') { showStatus('Admin access required', 'error'); return; }
+                showLoading(true);
+                Promise.all(Array.from(files).map(processFile)).then(() => {
+                    showLoading(false);
+                }).catch(err => {
+                    showStatus('An error occurred during file processing.', 'error');
+                    console.error(err);
+                    showLoading(false);
+                });
+            }
+
+            function processFile(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        try {
+                            let parsedData = [];
+                            if (file.name.endsWith('.csv')) {
+                                parsedData = Papa.parse(e.target.result, { header: true, skipEmptyLines: true }).data;
+                            } else if (file.name.endsWith('.json')) {
+                                parsedData = JSON.parse(e.target.result);
+                            } else if (file.name.match(/\.xls[x]?$/)) {
+                                const workbook = XLSX.read(e.target.result, { type: 'binary' });
+                                const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                                parsedData = XLSX.utils.sheet_to_json(firstSheet);
+                            }
+                            const sanitizedData = parsedData.map(record => {
+                                const sanitized = {};
+                                for (let key in record) { sanitized[key] = sanitizeInput(record[key]); }
+                                return sanitized;
+                            });
+                            State.data = [...State.data, ...sanitizedData];
+                            saveData();
+                            showStatus(`Imported ${sanitizedData.length} records from ${file.name}`, 'success');
+                            updateStats();
+                            resolve();
+                        } catch (err) { reject(err); }
+                    };
+                    reader.onerror = reject;
+                    if (file.name.match(/\.xls[x]?$/)) reader.readAsBinaryString(file);
+                    else reader.readAsText(file);
+                });
+            }
+
+            function updateStats() {
+                if(State.currentView !== 'admin') return;
+                document.getElementById('total-records').textContent = State.data.length;
+                const today = new Date().toDateString();
+                document.getElementById('today-searches').textContent = State.searchHistory.filter(s => new Date(s.timestamp).toDateString() === today).length;
+                const vessels = [...new Set(State.data.map(d => d['Name of Vessel'] || d.Vessel_Name))].filter(Boolean);
+                document.getElementById('active-vessels').textContent = vessels.length;
+                const totalAmount = State.data.reduce((sum, record) => {
+                    const amount = parseFloat(String(record['Total Demurrage amount'] || record.Total_Due_USD || '0').replace(/[^0-9.-]+/g,""));
+                    return sum + (isNaN(amount) ? 0 : amount);
+                }, 0);
+                document.getElementById('total-amount').textContent = formatCurrency(totalAmount);
+            }
+
+            function saveData() { try { localStorage.setItem('msc_data', encrypt(JSON.stringify(State.data))); return true; } catch (e) { showStatus('Failed to save data.', 'error'); return false; } }
+            function loadData() { try { const d = localStorage.getItem('msc_data'); if (d) State.data = JSON.parse(decrypt(d)); } catch (e) { State.data = []; } }
+            function loadRecentSearches() { try { const s = localStorage.getItem('msc_recent'); if (s) State.recentSearches = JSON.parse(decrypt(s)); } catch (e) { State.recentSearches = []; } }
+
+            function formatDate(dateStr) { if (!dateStr) return 'N/A'; try { return new Date(dateStr).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }); } catch (e) { return 'Invalid Date'; } }
+            function formatCurrency(amount) { const num = parseFloat(String(amount).replace(/[^0-9.-]+/g,"")) || 0; return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(num); }
+
+            function showStatus(message, type = 'info') {
+                const statusEl = document.getElementById(`${State.currentView}-status`) || document.getElementById('portal-status');
+                if (!statusEl) return;
+                message = sanitizeInput(message);
+                statusEl.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i> ${message}`;
+                statusEl.className = `status-message status-${type}`;
+                statusEl.style.display = 'block';
+                setTimeout(() => statusEl.style.display = 'none', 5000);
+            }
+
+            function showLoading(show = true) { document.getElementById('loadingOverlay').classList.toggle('active', show); }
+
+            function exportData() {
+                if (State.user?.role !== 'admin' || State.data.length === 0) { showStatus('No data to export or insufficient permissions.', 'warning'); return; }
+                const dataStr = JSON.stringify(State.data, null, 2);
+                const blob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url; a.download = `msc_data_export_${new Date().toISOString().split('T')[0]}.json`;
+                a.click(); URL.revokeObjectURL(url);
+                showStatus('Data exported successfully', 'success');
+            }
+
+            function backupData() {
+                if (State.user?.role !== 'admin') { showStatus('Admin access required', 'error'); return; }
+                const backup = { data: State.data, searches: State.recentSearches, history: State.searchHistory, timestamp: new Date().toISOString() };
+                localStorage.setItem('msc_backup', encrypt(JSON.stringify(backup)));
+                showStatus('Backup created successfully', 'success');
+            }
+            
+            function viewData() {
+                if (State.user?.role !== 'admin') { showStatus('Admin access required', 'error'); return; }
+                const dataView = document.getElementById('data-view');
+                const tbody = document.getElementById('dataTableBody');
+                if (dataView.style.display === 'none') {
+                    dataView.style.display = 'block';
+                    tbody.innerHTML = State.data.map((record, index) => `
+                        <tr>
+                            <td>${sanitizeInput(record.BL_Number || 'N/A')}</td>
+                            <td>${sanitizeInput(record['Name of Vessel'] || 'N/A')}</td>
+                            <td>${sanitizeInput(record['Voyage Number'] || 'N/A')}</td>
+                            <td>${formatDate(record['Date of Arrival'])}</td>
+                            <td>${formatCurrency(record['Total Demurrage amount'] || 0)}</td>
+                            <td><button class="btn btn-danger" style="padding:0.5rem" onclick="SecureApp.deleteRecord(${index})"><i class="fas fa-trash"></i></button></td>
+                        </tr>
+                    `).join('');
+                } else {
+                    dataView.style.display = 'none';
+                }
+            }
+
+            function deleteRecord(index) {
+                if(confirm('Are you sure you want to delete this record?')) {
+                    State.data.splice(index, 1);
+                    saveData();
+                    viewData();
+                    updateStats();
+                    showStatus('Record deleted.', 'success');
+                }
+            }
+            
+            function clearData() {
+                if (State.user?.role !== 'admin') { showStatus('Admin access required', 'error'); return; }
+                if (!confirm('Are you sure you want to delete all data? This cannot be undone.')) return;
+                const password = prompt('Enter admin password to confirm deletion:');
+                if (encrypt(password) !== encrypt('Admin@2025')) { showStatus('Invalid password', 'error'); return; }
+                State.data = [];
+                saveData();
+                updateStats();
+                viewData();
+                showStatus('All data has been cleared.', 'error');
+            }
+            
+            function generatePDF() {
+                const element = document.getElementById('results-container');
+                if (!element.classList.contains('visible')) { showStatus('No data to export.', 'error'); return; }
+                showLoading(true);
+                html2canvas(element, { scale: 2, backgroundColor: '#ffffff' }).then(canvas => {
+                    const { jsPDF } = window.jspdf;
+                    const pdf = new jsPDF('p', 'mm', 'a4');
+                    const imgData = canvas.toDataURL('image/png');
+                    const imgWidth = 210; const imgHeight = canvas.height * imgWidth / canvas.width;
+                    pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                    pdf.save(`MSC_Demurrage_${document.getElementById('res-bl').textContent}.pdf`);
+                    showStatus('PDF generated successfully.', 'success');
+                }).catch(err => {
+                    showStatus('PDF generation failed.', 'error'); console.error(err);
+                }).finally(() => showLoading(false));
+            }
+
+            function copyToClipboard() {
+                const text = Object.entries({
+                    'BL Number': document.getElementById('res-bl').textContent,
+                    'Vessel': document.getElementById('res-vessel-name').textContent,
+                    'Voyage': document.getElementById('res-voyage').textContent,
+                    'Arrival': document.getElementById('res-arrival').textContent,
+                    'From': document.getElementById('res-from-date').textContent,
+                    'To': document.getElementById('res-to-date').textContent,
+                    'Amount': document.getElementById('res-total').textContent
+                }).map(([k, v]) => `${k}: ${v}`).join('\n');
+                navigator.clipboard.writeText(text).then(() => showStatus('Data copied to clipboard.', 'success'));
+            }
+
+            function shareResult() {
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'MSC Demurrage Report',
+                        text: `BL: ${document.getElementById('res-bl').textContent}\nAmount: ${document.getElementById('res-total').textContent}`,
+                        url: window.location.href
+                    });
+                } else { copyToClipboard(); }
+            }
+            
+            // Public API
+            return {
+                init,
+                quickSearch,
+                copyToClipboard,
+                generatePDF,
+                shareResult,
+                exportData,
+                backupData,
+                viewData,
+                clearData,
+                deleteRecord
+            };
+        })();
+
+        document.addEventListener('DOMContentLoaded', SecureApp.init);
     </script>
 </body>
 </html>
+
