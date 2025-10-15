@@ -19,7 +19,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" xintegrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
     
     <style>
         /* --- Production-Ready Design System --- */
@@ -159,6 +159,11 @@
         .nav-item i {
             margin-right: 0.5rem;
             font-size: 0.9rem;
+        }
+
+        .nav-item:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         /* User Info */
@@ -798,6 +803,7 @@
         @media (max-width: 768px) {
             .nav-container {
                 padding: 1rem;
+                flex-wrap: wrap;
             }
             
             .nav-badge {
@@ -835,6 +841,30 @@
             
             .btn {
                 width: 100%;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .session-timer {
+                position: static;
+                margin-bottom: 1rem;
+                font-size: 0.75rem;
+            }
+            
+            .nav-menu {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .nav-item {
+                padding: 0.5rem;
+                font-size: 0.8rem;
             }
         }
 
@@ -880,6 +910,7 @@
             opacity: 0;
             pointer-events: none;
             transition: var(--transition);
+            z-index: 1000;
         }
 
         .tooltip:hover::after {
@@ -897,6 +928,44 @@
 
         .error-text.show {
             display: block;
+        }
+
+        /* Menu Toggle for Mobile */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: rgba(10, 14, 39, 0.95);
+                flex-direction: column;
+                padding: 1rem;
+                border-bottom: 1px solid var(--border);
+            }
+            
+            .nav-menu.active {
+                display: flex;
+            }
+            
+            .nav-item {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 0.5rem;
+            }
         }
     </style>
 </head>
@@ -918,7 +987,10 @@
                 <div class="nav-logo">MSC</div>
                 <span class="nav-badge">SECURE</span>
             </div>
-            <div class="nav-menu">
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-menu" id="navMenu">
                 <button class="nav-item active" id="nav-portal" aria-label="Agent Portal" disabled>
                     <i class="fas fa-search"></i>Agent Portal
                 </button>
@@ -1293,10 +1365,10 @@
     </main>
 
     <!-- External Scripts with Integrity Checks -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" xintegrity="sha512-dfX5uYVXzyU8+KHqj8bjo7UkOdg18PaOtpa48djpNbZHwExddghZ+ZmzWT06R5v6NSk3ZUfsH6FNEDepLx9hPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" xintegrity="sha512-r22gChDnGvBylk90+2e/ycr3RVrDi8DIOkIGNhJlKfuyQM4tIRAI062MaV8sfjQKYVGjOBaZBOA87z+IhZE9DA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" xintegrity="sha512-qZvrmS2ekKPF2mSZNvyHOLNbTdILn7S1CiGupRSp8OUPZG/1dXEjJEnxFVVbZeoO2TRmAs7bS+pNldApcvY+zQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" xintegrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibVocXgZWGpaUSb磯部寛子==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" integrity="sha512-dfX5uYVXzyU8+KHqj8bjo7UkOdg18PaOtpa48djpNbZHwExddghZ+ZmzWT06R5v6NSk3ZUfsH6FNEDepLx9hPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" integrity="sha512-r22gChDnGvBylk90+2e/ycr3RVrDi8DIOkIGNhJlKfuyQM4tIRAI062MaV8sfjQKYVGjOBaZBOA87z+IhZE9DA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSZNvyHOLNbTdILn7S1CiGupRSp8OUPZG/1dXEjJEnxFVVbZeoO2TRmAs7bS+pNldApcvY+zQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
     <script>
         const SecureApp = (function() {
@@ -1311,9 +1383,15 @@
             };
 
             const State = {
-                user: null, data: [], recentSearches: [], searchHistory: [],
-                currentView: 'login', loginAttempts: 0, sessionTimer: null,
-                sessionTimeout: null, requestCount: 0,
+                user: null, 
+                data: [], 
+                recentSearches: [], 
+                searchHistory: [],
+                currentView: 'login', 
+                loginAttempts: 0, 
+                sessionTimer: null,
+                sessionTimeout: null, 
+                requestCount: 0,
                 requestResetTime: Date.now() + CONFIG.RATE_LIMIT_WINDOW
             };
 
@@ -1324,6 +1402,8 @@
                 setupEventListeners();
                 setupKeyboardShortcuts();
                 setupFileUpload();
+                setupMobileMenu();
+                
                 if (State.data.length === 0) {
                     State.data = [
                         { "BL_Number": "MSCUBKG1200440", "Name of Vessel": "MSC OSCAR", "Voyage Number": "425N", "Date of Arrival": "2025-09-28", "From Date": "2025-09-25", "To Date": "2025-09-28", "Total Demurrage amount": "405.00" },
@@ -1333,15 +1413,34 @@
                 }
             }
 
-            function encrypt(text) { try { return btoa(encodeURIComponent(text)); } catch (e) { console.error('Encryption failed:', e); return text; } }
-            function decrypt(text) { try { return decodeURIComponent(atob(text)); } catch (e) { console.error('Decryption failed:', e); return text; } }
+            function encrypt(text) { 
+                try { 
+                    return btoa(encodeURIComponent(text)); 
+                } catch (e) { 
+                    console.error('Encryption failed:', e); 
+                    return text; 
+                } 
+            }
+            
+            function decrypt(text) { 
+                try { 
+                    return decodeURIComponent(atob(text)); 
+                } catch (e) { 
+                    console.error('Decryption failed:', e); 
+                    return text; 
+                } 
+            }
+            
             function sanitizeInput(input) {
                 if (typeof input !== 'string') return input;
                 const div = document.createElement('div');
                 div.textContent = input;
                 return div.innerHTML;
             }
-            function validateBLNumber(bl) { return /^[A-Z0-9]{10,20}$/.test(bl); }
+            
+            function validateBLNumber(bl) { 
+                return /^[A-Z0-9]{10,20}$/.test(bl); 
+            }
 
             function checkRateLimit() {
                 const now = Date.now();
@@ -1361,8 +1460,11 @@
                 State.user = user;
                 State.sessionTimeout = Date.now() + CONFIG.SESSION_TIMEOUT;
                 const sessionData = encrypt(JSON.stringify({ user, timeout: State.sessionTimeout }));
-                if (remember) { localStorage.setItem('msc_session', sessionData); } 
-                else { sessionStorage.setItem('msc_session', sessionData); }
+                if (remember) { 
+                    localStorage.setItem('msc_session', sessionData); 
+                } else { 
+                    sessionStorage.setItem('msc_session', sessionData); 
+                }
                 
                 updateSessionTimer();
                 State.sessionTimer = setInterval(updateSessionTimer, 1000);
@@ -1395,8 +1497,11 @@
                     State.sessionTimeout = Date.now() + CONFIG.SESSION_TIMEOUT;
                     document.getElementById('sessionTimer').classList.remove('warning');
                     const sessionData = encrypt(JSON.stringify({ user: State.user, timeout: State.sessionTimeout }));
-                    if (localStorage.getItem('msc_session')) localStorage.setItem('msc_session', sessionData);
-                    else sessionStorage.setItem('msc_session', sessionData);
+                    if (localStorage.getItem('msc_session')) {
+                        localStorage.setItem('msc_session', sessionData);
+                    } else {
+                        sessionStorage.setItem('msc_session', sessionData);
+                    }
                 }
             }
 
@@ -1475,21 +1580,61 @@
                 document.getElementById('print-btn').addEventListener('click', () => window.print());
                 document.getElementById('pdf-btn').addEventListener('click', generatePDF);
                 document.getElementById('export-btn').addEventListener('click', exportData);
-                document.body.addEventListener('mousemove', extendSession, { passive: true, once: true });
-                document.body.addEventListener('keydown', extendSession, { passive: true, once: true });
+                document.getElementById('theme-btn').addEventListener('click', toggleTheme);
+                
+                // Extend session on user activity
+                document.addEventListener('mousemove', extendSession, { passive: true });
+                document.addEventListener('keydown', extendSession, { passive: true });
+                document.addEventListener('click', extendSession, { passive: true });
+                document.addEventListener('touchstart', extendSession, { passive: true });
+            }
+
+            function setupMobileMenu() {
+                const menuToggle = document.getElementById('menuToggle');
+                const navMenu = document.getElementById('navMenu');
+                
+                if (menuToggle && navMenu) {
+                    menuToggle.addEventListener('click', () => {
+                        navMenu.classList.toggle('active');
+                    });
+                }
             }
 
             function setupKeyboardShortcuts() {
                 document.addEventListener('keydown', (e) => {
                     if ((e.ctrlKey || e.metaKey) && State.user) {
                         switch(e.key) {
-                            case 'k': e.preventDefault(); document.getElementById('bl-search').focus(); break;
-                            case 'p': e.preventDefault(); window.print(); break;
-                            case 'e': e.preventDefault(); generatePDF(); break;
-                            case '/': e.preventDefault(); switchView('help'); break;
+                            case 'k': 
+                                e.preventDefault(); 
+                                document.getElementById('bl-search').focus(); 
+                                break;
+                            case 'p': 
+                                e.preventDefault(); 
+                                window.print(); 
+                                break;
+                            case 'e': 
+                                e.preventDefault(); 
+                                generatePDF(); 
+                                break;
+                            case '/': 
+                                e.preventDefault(); 
+                                switchView('help'); 
+                                break;
                         }
                     }
                 });
+            }
+
+            function toggleTheme() {
+                document.body.classList.toggle('light-theme');
+                const themeIcon = document.querySelector('#theme-btn i');
+                if (document.body.classList.contains('light-theme')) {
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                } else {
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                }
             }
 
             function switchView(view) {
@@ -1512,6 +1657,9 @@
                 State.currentView = view;
                 if (view === 'admin') updateStats();
                 extendSession();
+                
+                // Close mobile menu when switching views
+                document.getElementById('navMenu').classList.remove('active');
             }
 
             function handleSearch(e) {
@@ -1568,6 +1716,7 @@
                 container.style.display = 'block';
                 setTimeout(() => container.classList.add('visible'), 50);
             }
+            
             function hideResults() {
                 const container = document.getElementById('results-container');
                 container.classList.remove('visible');
@@ -1586,10 +1735,13 @@
                 const container = document.getElementById('recent-searches');
                 const list = document.getElementById('recent-list');
                 if (State.recentSearches.length === 0) {
-                    container.style.display = 'none'; return;
+                    container.style.display = 'none'; 
+                    return;
                 }
                 container.style.display = 'block';
-                list.innerHTML = State.recentSearches.map(bl => `<span class="recent-item" onclick="SecureApp.quickSearch('${sanitizeInput(bl)}')">${sanitizeInput(bl)}</span>`).join('');
+                list.innerHTML = State.recentSearches.map(bl => 
+                    `<span class="recent-item" onclick="SecureApp.quickSearch('${sanitizeInput(bl)}')">${sanitizeInput(bl)}</span>`
+                ).join('');
             }
             
             function quickSearch(bl) {
@@ -1599,11 +1751,19 @@
 
             function handleManualEntry(e) {
                 e.preventDefault();
-                if (State.user?.role !== 'admin') { showStatus('Admin access required', 'error'); return; }
+                if (State.user?.role !== 'admin') { 
+                    showStatus('Admin access required', 'error'); 
+                    return; 
+                }
                 const formData = new FormData(e.target);
                 const record = {};
-                for (let [key, value] of formData.entries()) { record[key] = sanitizeInput(value); }
-                if (!validateBLNumber(record.BL_Number)) { showStatus('Invalid BL Number format', 'error'); return; }
+                for (let [key, value] of formData.entries()) { 
+                    record[key] = sanitizeInput(value); 
+                }
+                if (!validateBLNumber(record.BL_Number)) { 
+                    showStatus('Invalid BL Number format', 'error'); 
+                    return; 
+                }
                 State.data.push(record);
                 if (saveData()) {
                     e.target.reset();
@@ -1617,15 +1777,31 @@
                 const zone = document.getElementById('upload-zone');
                 const input = document.getElementById('file-input');
                 if (!zone || !input) return;
-                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => zone.addEventListener(eventName, (e) => { e.preventDefault(); e.stopPropagation(); }));
-                ['dragenter', 'dragover'].forEach(eventName => zone.addEventListener(eventName, () => zone.classList.add('active')));
-                ['dragleave', 'drop'].forEach(eventName => zone.addEventListener(eventName, () => zone.classList.remove('active')));
+                
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                    zone.addEventListener(eventName, (e) => { 
+                        e.preventDefault(); 
+                        e.stopPropagation(); 
+                    });
+                });
+                
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    zone.addEventListener(eventName, () => zone.classList.add('active'));
+                });
+                
+                ['dragleave', 'drop'].forEach(eventName => {
+                    zone.addEventListener(eventName, () => zone.classList.remove('active'));
+                });
+                
                 zone.addEventListener('drop', (e) => handleFiles(e.dataTransfer.files));
                 input.addEventListener('change', (e) => handleFiles(e.target.files));
             }
 
             function handleFiles(files) {
-                if (State.user?.role !== 'admin') { showStatus('Admin access required', 'error'); return; }
+                if (State.user?.role !== 'admin') { 
+                    showStatus('Admin access required', 'error'); 
+                    return; 
+                }
                 showLoading(true);
                 Promise.all(Array.from(files).map(processFile)).then(() => {
                     showLoading(false);
@@ -1653,7 +1829,9 @@
                             }
                             const sanitizedData = parsedData.map(record => {
                                 const sanitized = {};
-                                for (let key in record) { sanitized[key] = sanitizeInput(record[key]); }
+                                for (let key in record) { 
+                                    sanitized[key] = sanitizeInput(record[key]); 
+                                }
                                 return sanitized;
                             });
                             State.data = [...State.data, ...sanitizedData];
@@ -1661,11 +1839,16 @@
                             showStatus(`Imported ${sanitizedData.length} records from ${file.name}`, 'success');
                             updateStats();
                             resolve();
-                        } catch (err) { reject(err); }
+                        } catch (err) { 
+                            reject(err); 
+                        }
                     };
                     reader.onerror = reject;
-                    if (file.name.match(/\.xls[x]?$/)) reader.readAsBinaryString(file);
-                    else reader.readAsText(file);
+                    if (file.name.match(/\.xls[x]?$/)) {
+                        reader.readAsBinaryString(file);
+                    } else {
+                        reader.readAsText(file);
+                    }
                 });
             }
 
@@ -1683,12 +1866,54 @@
                 document.getElementById('total-amount').textContent = formatCurrency(totalAmount);
             }
 
-            function saveData() { try { localStorage.setItem('msc_data', encrypt(JSON.stringify(State.data))); return true; } catch (e) { showStatus('Failed to save data.', 'error'); return false; } }
-            function loadData() { try { const d = localStorage.getItem('msc_data'); if (d) State.data = JSON.parse(decrypt(d)); } catch (e) { State.data = []; } }
-            function loadRecentSearches() { try { const s = localStorage.getItem('msc_recent'); if (s) State.recentSearches = JSON.parse(decrypt(s)); } catch (e) { State.recentSearches = []; } }
+            function saveData() { 
+                try { 
+                    localStorage.setItem('msc_data', encrypt(JSON.stringify(State.data))); 
+                    return true; 
+                } catch (e) { 
+                    showStatus('Failed to save data.', 'error'); 
+                    return false; 
+                } 
+            }
+            
+            function loadData() { 
+                try { 
+                    const d = localStorage.getItem('msc_data'); 
+                    if (d) State.data = JSON.parse(decrypt(d)); 
+                } catch (e) { 
+                    State.data = []; 
+                } 
+            }
+            
+            function loadRecentSearches() { 
+                try { 
+                    const s = localStorage.getItem('msc_recent'); 
+                    if (s) State.recentSearches = JSON.parse(decrypt(s)); 
+                } catch (e) { 
+                    State.recentSearches = []; 
+                } 
+            }
 
-            function formatDate(dateStr) { if (!dateStr) return 'N/A'; try { return new Date(dateStr).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }); } catch (e) { return 'Invalid Date'; } }
-            function formatCurrency(amount) { const num = parseFloat(String(amount).replace(/[^0-9.-]+/g,"")) || 0; return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(num); }
+            function formatDate(dateStr) { 
+                if (!dateStr) return 'N/A'; 
+                try { 
+                    return new Date(dateStr).toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'short', 
+                        day: 'numeric' 
+                    }); 
+                } catch (e) { 
+                    return 'Invalid Date'; 
+                } 
+            }
+            
+            function formatCurrency(amount) { 
+                const num = parseFloat(String(amount).replace(/[^0-9.-]+/g,"")) || 0; 
+                return new Intl.NumberFormat('en-US', { 
+                    style: 'currency', 
+                    currency: 'USD' 
+                }).format(num); 
+            }
 
             function showStatus(message, type = 'info') {
                 const statusEl = document.getElementById(`${State.currentView}-status`) || document.getElementById('portal-status');
@@ -1700,28 +1925,46 @@
                 setTimeout(() => statusEl.style.display = 'none', 5000);
             }
 
-            function showLoading(show = true) { document.getElementById('loadingOverlay').classList.toggle('active', show); }
+            function showLoading(show = true) { 
+                document.getElementById('loadingOverlay').classList.toggle('active', show); 
+            }
 
             function exportData() {
-                if (State.user?.role !== 'admin' || State.data.length === 0) { showStatus('No data to export or insufficient permissions.', 'warning'); return; }
+                if (State.user?.role !== 'admin' || State.data.length === 0) { 
+                    showStatus('No data to export or insufficient permissions.', 'warning'); 
+                    return; 
+                }
                 const dataStr = JSON.stringify(State.data, null, 2);
                 const blob = new Blob([dataStr], { type: 'application/json' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
-                a.href = url; a.download = `msc_data_export_${new Date().toISOString().split('T')[0]}.json`;
-                a.click(); URL.revokeObjectURL(url);
+                a.href = url; 
+                a.download = `msc_data_export_${new Date().toISOString().split('T')[0]}.json`;
+                a.click(); 
+                URL.revokeObjectURL(url);
                 showStatus('Data exported successfully', 'success');
             }
 
             function backupData() {
-                if (State.user?.role !== 'admin') { showStatus('Admin access required', 'error'); return; }
-                const backup = { data: State.data, searches: State.recentSearches, history: State.searchHistory, timestamp: new Date().toISOString() };
+                if (State.user?.role !== 'admin') { 
+                    showStatus('Admin access required', 'error'); 
+                    return; 
+                }
+                const backup = { 
+                    data: State.data, 
+                    searches: State.recentSearches, 
+                    history: State.searchHistory, 
+                    timestamp: new Date().toISOString() 
+                };
                 localStorage.setItem('msc_backup', encrypt(JSON.stringify(backup)));
                 showStatus('Backup created successfully', 'success');
             }
             
             function viewData() {
-                if (State.user?.role !== 'admin') { showStatus('Admin access required', 'error'); return; }
+                if (State.user?.role !== 'admin') { 
+                    showStatus('Admin access required', 'error'); 
+                    return; 
+                }
                 const dataView = document.getElementById('data-view');
                 const tbody = document.getElementById('dataTableBody');
                 if (dataView.style.display === 'none') {
@@ -1733,7 +1976,11 @@
                             <td>${sanitizeInput(record['Voyage Number'] || 'N/A')}</td>
                             <td>${formatDate(record['Date of Arrival'])}</td>
                             <td>${formatCurrency(record['Total Demurrage amount'] || 0)}</td>
-                            <td><button class="btn btn-danger" style="padding:0.5rem" onclick="SecureApp.deleteRecord(${index})"><i class="fas fa-trash"></i></button></td>
+                            <td>
+                                <button class="btn btn-danger" style="padding:0.5rem" onclick="SecureApp.deleteRecord(${index})">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
                         </tr>
                     `).join('');
                 } else {
@@ -1752,10 +1999,16 @@
             }
             
             function clearData() {
-                if (State.user?.role !== 'admin') { showStatus('Admin access required', 'error'); return; }
+                if (State.user?.role !== 'admin') { 
+                    showStatus('Admin access required', 'error'); 
+                    return; 
+                }
                 if (!confirm('Are you sure you want to delete all data? This cannot be undone.')) return;
                 const password = prompt('Enter admin password to confirm deletion:');
-                if (encrypt(password) !== encrypt('Admin@2025')) { showStatus('Invalid password', 'error'); return; }
+                if (encrypt(password) !== encrypt('Admin@2025')) { 
+                    showStatus('Invalid password', 'error'); 
+                    return; 
+                }
                 State.data = [];
                 saveData();
                 updateStats();
@@ -1765,18 +2018,26 @@
             
             function generatePDF() {
                 const element = document.getElementById('results-container');
-                if (!element.classList.contains('visible')) { showStatus('No data to export.', 'error'); return; }
+                if (!element.classList.contains('visible')) { 
+                    showStatus('No data to export.', 'error'); 
+                    return; 
+                }
                 showLoading(true);
                 html2canvas(element, { scale: 2, backgroundColor: '#ffffff' }).then(canvas => {
-                    const { jsPDF } = window.jspdf;
+                    const jsPDF = window.jspdf?.jsPDF || window.jsPDF;
+                    if (!jsPDF) {
+                        throw new Error('PDF library not loaded');
+                    }
                     const pdf = new jsPDF('p', 'mm', 'a4');
                     const imgData = canvas.toDataURL('image/png');
-                    const imgWidth = 210; const imgHeight = canvas.height * imgWidth / canvas.width;
+                    const imgWidth = 210; 
+                    const imgHeight = canvas.height * imgWidth / canvas.width;
                     pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
                     pdf.save(`MSC_Demurrage_${document.getElementById('res-bl').textContent}.pdf`);
                     showStatus('PDF generated successfully.', 'success');
                 }).catch(err => {
-                    showStatus('PDF generation failed.', 'error'); console.error(err);
+                    showStatus('PDF generation failed.', 'error'); 
+                    console.error(err);
                 }).finally(() => showLoading(false));
             }
 
@@ -1790,7 +2051,11 @@
                     'To': document.getElementById('res-to-date').textContent,
                     'Amount': document.getElementById('res-total').textContent
                 }).map(([k, v]) => `${k}: ${v}`).join('\n');
-                navigator.clipboard.writeText(text).then(() => showStatus('Data copied to clipboard.', 'success'));
+                navigator.clipboard.writeText(text).then(() => {
+                    showStatus('Data copied to clipboard.', 'success');
+                }).catch(() => {
+                    showStatus('Failed to copy to clipboard.', 'error');
+                });
             }
 
             function shareResult() {
@@ -1799,8 +2064,14 @@
                         title: 'MSC Demurrage Report',
                         text: `BL: ${document.getElementById('res-bl').textContent}\nAmount: ${document.getElementById('res-total').textContent}`,
                         url: window.location.href
+                    }).catch(err => {
+                        if (err.name !== 'AbortError') {
+                            copyToClipboard();
+                        }
                     });
-                } else { copyToClipboard(); }
+                } else { 
+                    copyToClipboard(); 
+                }
             }
             
             // Public API
@@ -1818,8 +2089,9 @@
             };
         })();
 
-        document.addEventListener('DOMContentLoaded', SecureApp.init);
+        document.addEventListener('DOMContentLoaded', function() {
+            SecureApp.init();
+        });
     </script>
 </body>
 </html>
-
