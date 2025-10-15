@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSC Unified Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Core Styling & VisActor Theme --- */
+        :root {
+            --bg-dark: #111827; --card-dark: #1f2937; --border-dark: #374151;
+            --text-primary: #f9fafb; --text-secondary: #9ca3af; --accent-blue: #3b82f6;
+            --accent-green: #22c55e; --accent-red: #ef4444;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            margin: 0;
+            padding-top: 80px; /* Space for fixed header */
+        }
+        .container { max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+        .card { background-color: var(--card-dark); border-radius: 0.75rem; border: 1px solid var(--border-dark); padding: 2rem; margin-bottom: 2rem; }
+        h1 { font-size: 1.8rem; font-weight: 700; }
+        h2 { border-bottom: 1px solid var(--border-dark); padding-bottom: 0.75rem; margin-top: 0; font-size: 1.5rem; }
+        .btn { background-color: var(--accent-blue); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 500; cursor: pointer; transition: background-color 0.2s ease; }
+        .form-input { width: 100%; background-color: var(--bg-dark); border: 1px solid var(--border-dark); color: var(--text-primary); padding: 0.75rem 1rem; border-radius: 0.5rem; font-size: 1rem; margin-bottom: 1rem; }
+        .form-input:focus { outline: none; border-color: var(--accent-blue); box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.25); }
+        
+        /* --- Navigation Header --- */
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(31, 41, 55, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-dark);
+            z-index: 1000;
+            padding: 0 1rem;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+        .nav-logo { font-size: 1.5rem; font-weight: 700; font-style: italic; }
+        .nav-links button {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-links button:hover { color: var(--text-primary); }
+        .nav-links button.active { color: var(--text-primary); border-bottom-color: var(--accent-blue); }
+
+        /* --- Page Views --- */
+        .page-view { display: none; }
+        .page-view.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- Portal View Specific Styles --- */
+        #portal-view .results-container {
+            margin-top: 2.5rem;
+            opacity: 0; transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease; display: none;
+        }
+        #portal-view .results-container.visible { opacity: 1; transform: translateY(0); display: block; }
+        #portal-view .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+        #portal-view .data-field .label { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.25rem; display: block; text-transform: uppercase; }
+        #portal-view .data-field .value { font-size: 1.1rem; font-weight: 500; }
+        #portal-view .total-demurrage { grid-column: 1 / -1; text-align: center; background-color: rgba(59, 130, 246, 0.1); border: 1px solid var(--accent-blue); padding: 1rem; border-radius: 0.5rem; }
+        #portal-view .total-demurrage .value { font-size: 1.75rem; font-weight: 700; color: var(--accent-blue); }
+
+        /* --- Admin View Specific Styles --- */
+        #admin-view #drop-area { border: 2px dashed var(--border-dark); border-radius: 0.5rem; padding: 3rem; text-align: center; color: var(--text-secondary); cursor: pointer; transition: all 0.2s ease; }
+        #admin-view #drop-area.highlight { border-color: var(--accent-blue); background-color: rgba(59, 130, 246, 0.1); }
+        #admin-view .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        #status-message { padding: 1rem; border-radius: 0.5rem; text-align: center; font-weight: 500; display: none; transition: opacity 0.3s ease; margin-bottom: 2rem; }
+        .status-success { background-color: rgba(34, 197, 94, 0.2); color: var(--accent-green); }
+        .status-error { background-color: rgba(239, 68, 68, 0.2); color: var(--accent-red); }
+
+        /* --- Mobile Responsiveness --- */
+        @media (max-width: 768px) {
+            body { padding-top: 60px; }
+            .nav-container { height: 60px; }
+            .nav-logo { font-size: 1.2rem; }
+            .nav-links button { font-size: 0.9rem; padding: 0.5rem; }
+            .container { padding: 1rem; }
+            h1 { font-size: 1.5rem; }
+            .card { padding: 1.5rem; }
+            #portal-view .results-grid { grid-template-columns: 1fr; }
+            #admin-view .form-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <nav class="nav-container">
+            <div class="nav-logo">MSC</div>
+            <div class="nav-links">
+                <button id="nav-portal" class="active">Agent Portal</button>
+                <button id="nav-admin">Admin Utility</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <!-- AGENT PORTAL VIEW -->
+        <div id="portal-view" class="page-view active">
+            <header style="text-align: center; margin-bottom: 2.5rem;">
+                <h1>Demurrage Lookup Portal</h1>
+                <p style="color: var(--text-secondary);">Enter a Bill of Lading number to view details.</p>
+            </header>
+            <div class="card">
+                <form id="search-form">
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="text" id="bl-search" class="form-input" placeholder="e.g., MSCUBKG1200440" required>
+                        <button type="submit" class="btn">Search</button>
+                    </div>
+                </form>
+            </div>
+            <div id="portal-error" style="color: var(--accent-red); margin-top: 1rem; text-align: center; display: none;"></div>
+            <div id="results-container" class="results-container">
+                <div class="card">
+                    <div class="results-grid">
+                        <div class="data-field"><span class="label">Vessel Name</span><span class="value" id="res-vessel-name"></span></div>
+                        <div class="data-field"><span class="label">Voyage Number</span><span class="value" id="res-voyage"></span></div>
+                        <div class="data-field"><span class="label">Date of Arrival</span><span class="value" id="res-arrival"></span></div>
+                        <div class="data-field"><span class="label">Charges From</span><span class="value" id="res-from-date"></span></div>
+                        <div class="data-field"><span class="label">Charges To</span><span class="value" id="res-to-date"></span></div>
+                        <div class="total-demurrage">
+                            <span class="label">Total Demurrage Amount</span>
+                            <span class="value" id="res-total"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ADMIN UTILITY VIEW -->
+        <div id="admin-view" class="page-view">
+             <header style="text-align: center; margin-bottom: 2.5rem;">
+                <h1>Admin Data Utility</h1>
+                <p style="color: var(--text-secondary);">Upload or manually enter data for the agent portal.</p>
+                <p id="record-count" style="color: var(--accent-blue); font-weight: 500;"></p>
+            </header>
+            <div id="status-message"></div>
+            <div class="card">
+                <h2>Option 1: Upload CSV File</h2>
+                <div id="drop-area">
+                    <p>Drag & Drop CSV file here</p>
+                    <p>or</p>
+                    <input type="file" id="file-input" accept=".csv" style="display: none;">
+                    <label for="file-input" class="btn">Select File</label>
+                </div>
+            </div>
+            <div class="card">
+                <h2>Option 2: Add Single Entry</h2>
+                <form id="manual-entry-form">
+                    <div class="form-grid">
+                        <input type="text" name="BL_Number" placeholder="B/L Number" class="form-input" required>
+                        <input type="text" name="Total_Due_USD" placeholder="Total Demurrage (e.g., 652.00)" class="form-input" required>
+                        <input type="text" name="Vessel_Name" placeholder="Vessel Name" class="form-input">
+                        <input type="text" name="Voyage" placeholder="Voyage Number" class="form-input">
+                        <input type="date" name="Discharge_Date" placeholder="Date of Arrival" class="form-input" onfocus="(this.type='date')" onblur="if(!this.value)this.type='text'">
+                        <input type="date" name="Demurrage_Start" placeholder="Charges From Date" class="form-input" onfocus="(this.type='date')" onblur="if(!this.value)this.type='text'">
+                        <input type="date" name="Demurrage_End" placeholder="Charges To Date" class="form-input" onfocus="(this.type='date')" onblur="if(!this.value)this.type='text'">
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%; margin-top: 1rem;">Add Record</button>
+                </form>
+            </div>
+             <div class="card" style="text-align:center;">
+                 <button id="clear-data" class="btn" style="background-color: var(--accent-red);">Clear All Portal Data</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- CORE APP STATE & NAVIGATION ---
+            const navPortalBtn = document.getElementById('nav-portal');
+            const navAdminBtn = document.getElementById('nav-admin');
+            const portalView = document.getElementById('portal-view');
+            const adminView = document.getElementById('admin-view');
+            let demurrageData = [];
+            let adminAccessGranted = false;
+
+            const switchView = (view) => {
+                if (view === 'admin') {
+                    if (!adminAccessGranted) {
+                        const password = prompt("Please enter the admin password:", "");
+                        // IMPORTANT: Change this password in a real environment
+                        if (password !== "MSC-ADMIN-2025") {
+                            alert("Incorrect password.");
+                            return;
+                        }
+                        adminAccessGranted = true;
+                    }
+                    portalView.classList.remove('active');
+                    adminView.classList.add('active');
+                    navPortalBtn.classList.remove('active');
+                    navAdminBtn.classList.add('active');
+                    window.location.hash = 'admin';
+                } else { // 'portal'
+                    portalView.classList.add('active');
+                    adminView.classList.remove('active');
+                    navAdminBtn.classList.remove('active');
+                    navPortalBtn.classList.add('active');
+                    window.location.hash = 'portal';
+                }
+            };
+            
+            navPortalBtn.addEventListener('click', () => switchView('portal'));
+            navAdminBtn.addEventListener('click', () => switchView('admin'));
+
+            // --- DATA HANDLING ---
+            const loadData = () => {
+                try {
+                    const storedData = localStorage.getItem('mscDemurrageData');
+                    demurrageData = storedData ? JSON.parse(storedData) : [];
+                    updateRecordCount();
+                } catch (e) {
+                    demurrageData = [];
+                    showStatus("Error loading data from storage.", true);
+                }
+            };
+            const saveData = () => {
+                localStorage.setItem('mscDemurrageData', JSON.stringify(demurrageData));
+                updateRecordCount();
+            };
+            const updateRecordCount = () => {
+                document.getElementById('record-count').textContent = `${demurrageData.length} records currently active in the portal.`;
+            };
+            const showStatus = (message, isError = false) => {
+                const statusEl = document.getElementById('status-message');
+                statusEl.textContent = message;
+                statusEl.className = isError ? 'status-error' : 'status-success';
+                statusEl.style.display = 'block';
+                setTimeout(() => statusEl.style.display = 'none', 4000);
+            };
+
+            // --- AGENT PORTAL LOGIC ---
+            const searchForm = document.getElementById('search-form');
+            const blInput = document.getElementById('bl-search');
+            const resultsContainer = document.getElementById('results-container');
+            const portalError = document.getElementById('portal-error');
+
+            searchForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                performSearch(blInput.value.trim().toUpperCase());
+            });
+
+            function performSearch(blNumber) {
+                portalError.style.display = 'none';
+                resultsContainer.classList.remove('visible');
+                const record = demurrageData.find(item => item.BL_Number && item.BL_Number.toUpperCase() === blNumber);
+
+                if (record) {
+                    document.getElementById('res-vessel-name').textContent = record.Vessel_Name || 'N/A';
+                    document.getElementById('res-voyage').textContent = record.Voyage || 'N/A';
+                    document.getElementById('res-arrival').textContent = record.Discharge_Date || 'N/A';
+                    document.getElementById('res-from-date').textContent = record.Demurrage_Start || 'N/A';
+                    document.getElementById('res-to-date').textContent = record.Demurrage_End || 'N/A';
+                    const totalDue = parseFloat(record.Total_Due_USD || 0);
+                    document.getElementById('res-total').textContent = `USD ${totalDue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                    setTimeout(() => resultsContainer.classList.add('visible'), 100);
+                } else {
+                    portalError.textContent = "Bill of Lading number not found.";
+                    portalError.style.display = 'block';
+                }
+            }
+
+            // --- ADMIN UTILITY LOGIC ---
+            const dropArea = document.getElementById('drop-area');
+            const fileInput = document.getElementById('file-input');
+            const manualForm = document.getElementById('manual-entry-form');
+            const clearButton = document.getElementById('clear-data');
+
+            // CSV Upload
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eName => dropArea.addEventListener(eName, e => { e.preventDefault(); e.stopPropagation(); }));
+            ['dragenter', 'dragover'].forEach(eName => dropArea.addEventListener(eName, () => dropArea.classList.add('highlight')));
+            ['dragleave', 'drop'].forEach(eName => dropArea.addEventListener(eName, () => dropArea.classList.remove('highlight')));
+            dropArea.addEventListener('drop', e => handleFiles(e.dataTransfer.files));
+            fileInput.addEventListener('change', e => handleFiles(e.target.files));
+
+            function handleFiles(files) {
+                if (files.length === 0) return;
+                Papa.parse(files[0], {
+                    header: true, skipEmptyLines: true,
+                    complete: (results) => {
+                        const newRecords = results.data.filter(item => item.BL_Number);
+                        demurrageData = [...demurrageData, ...newRecords];
+                        saveData();
+                        showStatus(`${newRecords.length} records successfully added from CSV.`);
+                    },
+                    error: (err) => showStatus(`CSV Parsing Error: ${err.message}`, true)
+                });
+            }
+
+            // Manual Entry
+            manualForm.addEventListener('submit', e => {
+                e.preventDefault();
+                const newRecord = Object.fromEntries(new FormData(manualForm).entries());
+                if (newRecord.BL_Number) {
+                    demurrageData.push(newRecord);
+                    saveData();
+                    showStatus(`Record for B/L ${newRecord.BL_Number} added successfully.`);
+                    manualForm.reset();
+                }
+            });
+
+            // Clear Data
+            clearButton.addEventListener('click', () => {
+                if (confirm("Are you sure you want to delete ALL data from the agent portal? This cannot be undone.")) {
+                    demurrageData = [];
+                    saveData();
+                    showStatus("All portal data has been cleared.", true);
+                }
+            });
+
+            // --- INITIALIZATION ---
+            loadData();
+            if (window.location.hash === '#admin') {
+                switchView('admin');
+            } else {
+                switchView('portal');
+            }
+        });
+    </script>
+</body>
+</html>
