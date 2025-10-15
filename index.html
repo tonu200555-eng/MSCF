@@ -7,167 +7,414 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
-        /* Borrowing styles from your templates */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         :root {
-            --msc-blue: #005DAA;
-            --msc-light-blue: #f0f7ff;
-            --msc-text: #333;
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --bg-gradient-start: #0f0f23;
+            --bg-gradient-end: #1a1a3e;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b8;
+            --accent: #f97316;
         }
+        
         body {
-            background-color: #f8f9fa;
-            color: var(--msc-text);
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            position: relative;
+            overflow-x: hidden;
         }
+        
+        /* Animated background particles */
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out;
+        }
+        
+        .particle:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            left: 10%;
+            animation-delay: 0s;
+            filter: blur(40px);
+        }
+        
+        .particle:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            right: 20%;
+            animation-delay: 2s;
+            filter: blur(60px);
+        }
+        
+        .particle:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            left: 50%;
+            animation-delay: 4s;
+            filter: blur(50px);
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.5; }
+            33% { transform: translateY(-100px) rotate(120deg); opacity: 0.8; }
+            66% { transform: translateY(100px) rotate(240deg); opacity: 0.3; }
+        }
+        
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+        
         .header {
-            background-color: var(--msc-blue);
-            color: white;
-            padding: 1.5rem;
             text-align: center;
+            padding: 3rem 1rem;
+            position: relative;
+            z-index: 2;
         }
-        .header .msc-logo {
-            font-size: 2.5rem;
-            font-weight: bold;
-            font-style: italic;
-            letter-spacing: 2px;
+        
+        .logo {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            animation: glow 2s ease-in-out infinite alternate;
         }
+        
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.5)); }
+            to { filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.8)); }
+        }
+        
         .search-card {
-            transition: all 0.3s ease-in-out;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            transform: translateY(0);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        
+        .search-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+        
+        .form-label {
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.875rem;
+        }
+        
+        .form-control {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-primary);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25);
+            color: var(--text-primary);
+            outline: none;
+        }
+        
+        .btn-search {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border: none;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-search::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .btn-search:hover::before {
+            left: 100%;
+        }
+        
+        .btn-search:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+        }
+        
         .results-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            display: none; /* Hidden by default */
+            transform: translateY(30px) scale(0.95);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: none;
+            margin-top: 2rem;
         }
+        
         .results-card.show {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
             display: block;
+            animation: slideIn 0.5s ease-out;
         }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
         .report-header {
-            background-color: var(--msc-blue);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 2rem;
             color: white;
-            padding: 1rem 1.5rem;
         }
-        .section-title {
-            color: var(--msc-blue);
-            font-weight: bold;
-            border-bottom: 2px solid var(--msc-blue);
-            padding-bottom: 0.5rem;
+        
+        .data-field {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             margin-bottom: 1rem;
+            transition: all 0.3s ease;
         }
-        .charges-table th {
-            background-color: var(--msc-blue);
+        
+        .data-field:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(5px);
+        }
+        
+        .field-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .field-value {
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .total-amount {
+            background: linear-gradient(135deg, var(--accent) 0%, #ea580c 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        
+        .total-amount .field-value {
+            font-size: 2rem;
             color: white;
         }
-        .total-row {
-            background-color: var(--msc-light-blue);
-            font-weight: bold;
-            font-size: 1.2rem;
-            color: var(--msc-blue);
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.2);
+            justify-content: center;
         }
-        .status-paid { color: #198754; font-weight: bold; }
-        .status-unpaid { color: #dc3545; font-weight: bold; }
-        .status-partially_paid { color: #ffc107; font-weight: bold; }
-        /* Print styles */
+        
+        .btn-action {
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            border: 2px solid;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-print {
+            background: transparent;
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-print:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .btn-pdf {
+            background: linear-gradient(135deg, var(--accent) 0%, #ea580c 100%);
+            border-color: transparent;
+            color: white;
+        }
+        
+        .btn-pdf:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(249, 115, 22, 0.4);
+        }
+        
+        .alert-danger {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+            border-radius: 12px;
+            padding: 1rem;
+        }
+        
         @media print {
+            body {
+                background: white;
+                color: black;
+            }
             .no-print { display: none !important; }
-            .print-shadow-none { box-shadow: none !important; }
-            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .data-field {
+                background: white;
+                border: 1px solid #ddd;
+                color: black;
+            }
+            .field-label { color: #666; }
+            .field-value { color: black; }
+            .report-header {
+                background: #f0f0f0;
+                color: black;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="bg-animation">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
 
-    <header class="header no-print">
-        <div class="msc-logo">MSC</div>
-        <div class="fs-5 mt-2">Mediterranean Shipping Company</div>
-        <p class="lead">Container Demurrage Portal - Chittagong</p>
-    </header>
+    <div class="container">
+        <header class="header no-print">
+            <div class="logo">MSC</div>
+            <h2>Mediterranean Shipping Company</h2>
+            <p class="text-secondary">Container Demurrage Portal</p>
+        </header>
 
-    <div class="container my-5">
-        <div class="card shadow-sm search-card no-print">
-            <div class="card-body p-4">
-                <form id="search-form">
-                    <label for="bl-search" class="form-label fs-5">Bill of Lading Search</label>
-                    <div class="input-group">
-                        <input type="text" id="bl-search" class="form-control form-control-lg" placeholder="Enter B/L Number" required>
-                        <button class="btn btn-primary" type="submit" style="background-color: var(--msc-blue);">
-                            <i class="bi bi-search me-2"></i>Search
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="search-card no-print">
+                    <form id="search-form">
+                        <label for="bl-search" class="form-label">Enter BL Number to Search</label>
+                        <div class="input-group">
+                            <input type="text" id="bl-search" class="form-control" 
+                                   placeholder="Enter BL Number" required>
+                            <button class="btn btn-search" type="submit">
+                                <i class="bi bi-search me-2"></i>Search
+                            </button>
+                        </div>
+                    </form>
+                    <div id="error-message" class="alert alert-danger mt-3" style="display: none;"></div>
+                </div>
+
+                <div id="results-card" class="results-card">
+                    <div id="report-content">
+                        <div class="report-header">
+                            <h3 class="mb-0">Demurrage Report</h3>
+                            <p class="mb-0 mt-2" id="report-date"></p>
+                        </div>
+                        <div class="p-4">
+                            <div class="data-field">
+                                <div class="field-label">BL Number</div>
+                                <div class="field-value" id="res-bl"></div>
+                            </div>
+                            <div class="data-field">
+                                <div class="field-label">Name of Vessel</div>
+                                <div class="field-value" id="res-vessel"></div>
+                            </div>
+                            <div class="data-field">
+                                <div class="field-label">Voyage Number</div>
+                                <div class="field-value" id="res-voyage"></div>
+                            </div>
+                            <div class="data-field">
+                                <div class="field-label">From Date</div>
+                                <div class="field-value" id="res-from-date"></div>
+                            </div>
+                            <div class="data-field">
+                                <div class="field-label">To Date</div>
+                                <div class="field-value" id="res-to-date"></div>
+                            </div>
+                            <div class="data-field">
+                                <div class="field-label">Date of Arrival</div>
+                                <div class="field-value" id="res-arrival-date"></div>
+                            </div>
+                            <div class="total-amount">
+                                <div class="field-label" style="color: rgba(255,255,255,0.8);">Total Demurrage amount</div>
+                                <div class="field-value" id="res-total"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="action-buttons no-print">
+                        <button class="btn btn-action btn-print" onclick="window.print()">
+                            <i class="bi bi-printer me-2"></i>Print
+                        </button>
+                        <button class="btn btn-action btn-pdf" onclick="generatePDF()">
+                            <i class="bi bi-file-pdf me-2"></i>Create PDF
                         </button>
                     </div>
-                </form>
-                <div id="error-message" class="alert alert-danger mt-3" style="display: none;"></div>
-            </div>
-        </div>
-
-        <div id="results-card" class="card shadow-lg mt-5 results-card print-shadow-none">
-            <div id="report-content">
-                <div class="report-header">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <h4 class="mb-0">Charge & Demurrage Report</h4>
-                            <p class="mb-0 small">Port of Chittagong, Bangladesh</p>
-                        </div>
-                        <div class="text-end">
-                            <small>Report Date</small>
-                            <p class="fw-bold mb-0" id="report-date"></p>
-                        </div>
-                    </div>
                 </div>
-                <div class="card-body p-4 p-md-5">
-                    <h5 class="section-title">Shipment Information</h5>
-                    <div class="row g-3 mb-4">
-                        <div class="col-md-6"><small class="text-muted">B/L Number</small><div class="fw-bold" id="res-bl"></div></div>
-                        <div class="col-md-6"><small class="text-muted">Container ID</small><div class="fw-bold" id="res-container"></div></div>
-                        <div class="col-md-6"><small class="text-muted">Vessel / Voyage</small><div class="fw-bold" id="res-vessel"></div></div>
-                        <div class="col-md-6"><small class="text-muted">Consignee</small><div class="fw-bold" id="res-consignee"></div></div>
-                        <div class="col-md-6"><small class="text-muted">Container Type</small><div class="fw-bold" id="res-type"></div></div>
-                        <div class="col-md-6"><small class="text-muted">Discharge Date</small><div class="fw-bold" id="res-discharge"></div></div>
-                    </div>
-                    <h5 class="section-title">Charges Breakdown</h5>
-                    <table class="table table-bordered charges-table">
-                        <thead>
-                            <tr>
-                                <th>Description</th>
-                                <th class="text-end">Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Port Handling Charges</td>
-                                <td class="text-end" id="res-port-charges"></td>
-                            </tr>
-                            <tr>
-                                <td>Agency Fee</td>
-                                <td class="text-end" id="res-agency-fee"></td>
-                            </tr>
-                            <tr>
-                                <td>Documentation Fee</td>
-                                <td class="text-end" id="res-doc-fee"></td>
-                            </tr>
-                            <tr>
-                                <td>Amendment Fee</td>
-                                <td class="text-end" id="res-amend-fee"></td>
-                            </tr>
-                            <tr>
-                                <td>Container Demurrage (<span id="res-dem-days"></span> days)</td>
-                                <td class="text-end" id="res-dem-amount"></td>
-                            </tr>
-                            <tr class="total-row">
-                                <td>TOTAL AMOUNT DUE</td>
-                                <td class="text-end" id="res-total"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="d-flex justify-content-between align-items-center mt-3">
-                        <h6 class="mb-0">Payment Status:</h6>
-                        <span class="fs-5" id="res-status"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="card-footer text-center py-3 no-print">
-                <button class="btn btn-secondary" onclick="window.print()"><i class="bi bi-printer me-2"></i>Print Report</button>
-                <button class="btn btn-success" onclick="generatePDF()"><i class="bi bi-file-earmark-pdf me-2"></i>Download PDF</button>
             </div>
         </div>
     </div>
@@ -185,7 +432,7 @@
                 if (!response.ok) throw new Error('Data file not found.');
                 containerData = await response.json();
             } catch (error) {
-                showError('Could not load portal data. Please contact the MSC office.');
+                showError('Could not load portal data. Please contact support.');
                 console.error(error);
             }
         });
@@ -200,40 +447,39 @@
         function searchBL(blNumber) {
             hideError();
             const resultsCard = document.getElementById('results-card');
-            const record = containerData.find(item => item.BL_Number.toUpperCase() === blNumber);
+            const record = containerData.find(item => 
+                item.BL_Number && item.BL_Number.toUpperCase() === blNumber
+            );
 
             if (record) {
-                // Calculate Demurrage
-                const demurrageAmount = parseFloat(record.Demurrage_Days) * parseFloat(record.Demurrage_Rate_USD);
+                // Populate data with exact field names as requested
+                document.getElementById('report-date').textContent = `Report Generated: ${new Date().toLocaleDateString()}`;
+                document.getElementById('res-bl').textContent = record.BL_Number || 'N/A';
+                document.getElementById('res-vessel').textContent = record['Name of Vessel'] || record.Vessel_Name || 'N/A';
+                document.getElementById('res-voyage').textContent = record['Voyage Number'] || record.Voyage || 'N/A';
+                document.getElementById('res-from-date').textContent = record['From Date'] || record.Discharge_Date || 'N/A';
+                document.getElementById('res-to-date').textContent = record['To Date'] || calculateToDate(record.Discharge_Date, record.Demurrage_Days) || 'N/A';
+                document.getElementById('res-arrival-date').textContent = record['Date of Arrival'] || record.Discharge_Date || 'N/A';
+                document.getElementById('res-total').textContent = record['Total Demurrage amount'] || `USD ${parseFloat(record.Total_Due_USD || 0).toFixed(2)}`;
 
-                // Populate data
-                document.getElementById('report-date').textContent = new Date().toLocaleDateString();
-                document.getElementById('res-bl').textContent = record.BL_Number;
-                document.getElementById('res-container').textContent = record.Container_ID;
-                document.getElementById('res-vessel').textContent = `${record.Vessel_Name} / ${record.Voyage}`;
-                document.getElementById('res-consignee').textContent = record.Consignee;
-                document.getElementById('res-type').textContent = record.Container_Type;
-                document.getElementById('res-discharge').textContent = record.Discharge_Date;
-
-                document.getElementById('res-port-charges').textContent = `BDT ${parseFloat(record.Port_Charges_BDT).toLocaleString()}`;
-                document.getElementById('res-agency-fee').textContent = `USD ${parseFloat(record.Agency_Fee_USD).toFixed(2)}`;
-                document.getElementById('res-doc-fee').textContent = `USD ${parseFloat(record.Documentation_Fee_USD).toFixed(2)}`;
-                document.getElementById('res-amend-fee').textContent = `USD ${parseFloat(record.Amendment_Fee_USD).toFixed(2)}`;
-                document.getElementById('res-dem-days').textContent = record.Demurrage_Days;
-                document.getElementById('res-dem-amount').textContent = `USD ${demurrageAmount.toFixed(2)}`;
-                document.getElementById('res-total').textContent = `USD ${parseFloat(record.Total_Due_USD).toFixed(2)}`;
-                
-                // Set status style
-                const statusEl = document.getElementById('res-status');
-                statusEl.textContent = record.Payment_Status.replace('_', ' ');
-                statusEl.className = `status-${record.Payment_Status.toLowerCase()}`;
-
-                // Show results card with animation
+                // Show results with animation
                 resultsCard.classList.add('show');
+                
+                // Smooth scroll to results
+                setTimeout(() => {
+                    resultsCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100);
             } else {
-                showError('Bill of Lading number not found. Please check the number and try again.');
+                showError('BL Number not found. Please check and try again.');
                 resultsCard.classList.remove('show');
             }
+        }
+
+        function calculateToDate(fromDate, demurrageDays) {
+            if (!fromDate) return 'N/A';
+            const date = new Date(fromDate);
+            date.setDate(date.getDate() + parseInt(demurrageDays || 0));
+            return date.toISOString().split('T')[0];
         }
 
         function generatePDF() {
@@ -241,13 +487,17 @@
             const reportContent = document.getElementById('report-content');
             const blNumber = document.getElementById('res-bl').textContent;
             
-            html2canvas(reportContent, { scale: 2 }).then(canvas => {
+            html2canvas(reportContent, { 
+                scale: 2,
+                backgroundColor: '#ffffff',
+                logging: false
+            }).then(canvas => {
                 const imgData = canvas.toDataURL('image/png');
                 const pdf = new jsPDF('p', 'mm', 'a4');
                 const pdfWidth = pdf.internal.pageSize.getWidth();
                 const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
                 pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-                pdf.save(`MSC_Report_${blNumber}.pdf`);
+                pdf.save(`MSC_Demurrage_${blNumber}.pdf`);
             });
         }
         
@@ -256,6 +506,7 @@
             errorDiv.textContent = message;
             errorDiv.style.display = 'block';
         }
+        
         function hideError() {
             document.getElementById('error-message').style.display = 'none';
         }
