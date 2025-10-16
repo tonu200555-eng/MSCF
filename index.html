@@ -2,13 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <meta name="description" content="MSC Demurrage Portal - Professional Container Tracking System">
     <meta name="robots" content="noindex, nofollow">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="theme-color" content="#0062ff">
     
-    <!-- Security Headers -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:;">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="X-Frame-Options" content="DENY">
@@ -22,6 +21,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
     
     <style>
+        /* --- Enhanced Font Rendering & Smooth Scrolling --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         /* --- Production-Ready Design System --- */
         :root {
             --primary: #0062ff;
@@ -43,22 +57,28 @@
             --shadow-md: 0 4px 16px rgba(0,0,0,0.2);
             --shadow-lg: 0 8px 32px rgba(0,0,0,0.3);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            --safe-area-inset-top: env(safe-area-inset-top);
+            --safe-area-inset-bottom: env(safe-area-inset-bottom);
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 16px;
             background: var(--bg-dark);
             color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
             position: relative;
             min-height: 100vh;
+            padding-top: var(--safe-area-inset-top);
+            padding-bottom: var(--safe-area-inset-bottom);
+        }
+
+        /* Enhanced text legibility */
+        p, span, div {
+            font-feature-settings: "kern" 1;
+            font-kerning: normal;
         }
 
         /* Animated Background */
@@ -80,11 +100,12 @@
         /* Professional Navigation */
         .main-header {
             position: fixed;
-            top: 0;
+            top: var(--safe-area-inset-top);
             left: 0;
             right: 0;
             background: rgba(10, 14, 39, 0.95);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
             z-index: 1000;
             transition: var(--transition);
@@ -137,18 +158,24 @@
             background: transparent;
             border: none;
             color: var(--text-secondary);
-            padding: 0.5rem 1.25rem;
+            padding: 0.625rem 1.25rem;
             font-size: 0.95rem;
             font-weight: 500;
             cursor: pointer;
             border-radius: 0.5rem;
-            transition: var(--transition);
+            transition: var(--transition-fast);
             position: relative;
+            touch-action: manipulation;
         }
 
-        .nav-item:hover {
+        .nav-item:hover:not(:disabled) {
             color: var(--text-primary);
             background: var(--bg-hover);
+            transform: translateY(-1px);
+        }
+
+        .nav-item:active:not(:disabled) {
+            transform: translateY(0);
         }
 
         .nav-item.active {
@@ -192,7 +219,7 @@
         /* Quick Actions Bar */
         .quick-actions {
             position: fixed;
-            bottom: 2rem;
+            bottom: calc(2rem + var(--safe-area-inset-bottom));
             right: 2rem;
             display: flex;
             flex-direction: column;
@@ -208,17 +235,22 @@
             background: var(--bg-card);
             color: var(--text-secondary);
             cursor: pointer;
-            transition: var(--transition);
+            transition: var(--transition-fast);
             box-shadow: var(--shadow-md);
             display: flex;
             align-items: center;
             justify-content: center;
+            touch-action: manipulation;
         }
 
-        .quick-action-btn:hover {
+        .quick-action-btn:hover:not(:disabled) {
             background: var(--primary);
             color: white;
             transform: scale(1.1);
+        }
+
+        .quick-action-btn:active:not(:disabled) {
+            transform: scale(1.05);
         }
 
         .quick-action-btn:disabled {
@@ -230,7 +262,7 @@
         .main-content {
             max-width: 900px;
             margin: 0 auto;
-            padding: 100px 2rem 2rem;
+            padding: calc(100px + var(--safe-area-inset-top)) 2rem 2rem;
             position: relative;
             z-index: 1;
         }
@@ -283,23 +315,26 @@
             position: relative;
             display: flex;
             gap: 0.75rem;
+            flex-wrap: wrap;
         }
 
         .form-input {
             flex: 1;
+            min-width: 200px;
             background: var(--bg-dark);
             border: 2px solid var(--border);
             color: var(--text-primary);
             padding: 0.875rem 1rem 0.875rem 3rem;
             border-radius: 0.75rem;
             font-size: 1rem;
-            transition: var(--transition);
+            transition: var(--transition-fast);
         }
 
         .form-input:focus {
             outline: none;
             border-color: var(--primary);
             background: rgba(0, 98, 255, 0.05);
+            box-shadow: 0 0 0 3px rgba(0, 98, 255, 0.1);
         }
 
         .form-input.error {
@@ -323,9 +358,11 @@
             border-radius: 0.75rem;
             font-weight: 600;
             cursor: pointer;
-            transition: var(--transition);
+            transition: var(--transition-fast);
             position: relative;
             overflow: hidden;
+            touch-action: manipulation;
+            min-height: 44px; /* iOS tap target */
         }
 
         .btn::before {
@@ -346,9 +383,13 @@
             height: 300px;
         }
 
-        .btn:hover {
+        .btn:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: var(--shadow-lg);
+        }
+
+        .btn:active:not(:disabled) {
+            transform: translateY(0);
         }
 
         .btn:disabled {
@@ -362,7 +403,7 @@
             color: var(--primary);
         }
 
-        .btn-secondary:hover {
+        .btn-secondary:hover:not(:disabled) {
             background: var(--primary);
             color: white;
         }
@@ -398,20 +439,22 @@
             padding: 0.875rem 1rem;
             border-radius: 0.75rem;
             font-size: 1rem;
-            transition: var(--transition);
+            transition: var(--transition-fast);
+            min-height: 44px;
         }
 
         .form-input-full:focus {
             outline: none;
             border-color: var(--primary);
             background: rgba(0, 98, 255, 0.05);
+            box-shadow: 0 0 0 3px rgba(0, 98, 255, 0.1);
         }
 
         /* Results Display */
         .results-container {
             opacity: 0;
             transform: translateY(20px);
-            transition: var(--transition);
+            transition: opacity 0.5s ease, transform 0.5s ease;
             display: none;
         }
 
@@ -444,7 +487,7 @@
             padding: 1.25rem;
             border-radius: 0.75rem;
             border: 1px solid var(--border);
-            transition: var(--transition);
+            transition: var(--transition-fast);
         }
 
         .data-item:hover {
@@ -467,6 +510,7 @@
             font-size: 1.125rem;
             font-weight: 600;
             color: var(--text-primary);
+            word-break: break-word;
         }
 
         .highlight-box {
@@ -566,6 +610,8 @@
             align-items: center;
             justify-content: center;
             z-index: 9999;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
         }
 
         .loading-overlay.active {
@@ -599,15 +645,21 @@
             color: var(--text-secondary);
             margin: 0.25rem;
             cursor: pointer;
-            transition: var(--transition);
+            transition: var(--transition-fast);
+            touch-action: manipulation;
         }
 
         .recent-item:hover {
             background: var(--primary);
             color: white;
+            transform: translateY(-2px);
         }
 
-        /* Admin Features */
+        .recent-item:active {
+            transform: translateY(0);
+        }
+
+        /* Upload zone */
         .upload-zone {
             border: 2px dashed var(--border);
             border-radius: 1rem;
@@ -639,6 +691,7 @@
         .data-table-container {
             width: 100%;
             overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .data-table {
@@ -695,6 +748,12 @@
             border-radius: 0.75rem;
             border: 1px solid var(--border);
             text-align: center;
+            transition: var(--transition-fast);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
 
         .stat-value {
@@ -712,7 +771,7 @@
         /* Session Timer */
         .session-timer {
             position: fixed;
-            top: 80px;
+            top: calc(80px + var(--safe-area-inset-top));
             right: 20px;
             background: var(--bg-card);
             padding: 0.75rem 1.5rem;
@@ -726,11 +785,281 @@
 
         .session-timer.active {
             display: block;
+            animation: slideInRight 0.3s ease;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
         .session-timer.warning {
             border-color: var(--warning);
             color: var(--warning);
+        }
+
+        /* Menu Toggle for Mobile */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            touch-action: manipulation;
+        }
+
+        /* Page Transitions */
+        .page-view {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .page-view.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+            animation: fadeInUp 0.5s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+        }
+
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-hover);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition-fast);
+            z-index: 1000;
+        }
+
+        .tooltip:hover::after {
+            opacity: 1;
+            bottom: calc(100% + 0.5rem);
+        }
+
+        /* Error Message */
+        .error-text {
+            color: var(--danger);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .error-text.show {
+            display: block;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 768px) {
+            body {
+                font-size: 14px;
+            }
+            
+            .nav-container {
+                padding: 1rem;
+                height: 60px;
+            }
+            
+            .nav-badge {
+                display: none;
+            }
+
+            .user-info {
+                display: none;
+            }
+            
+            .main-content {
+                padding: calc(70px + var(--safe-area-inset-top)) 1rem 1rem;
+            }
+            
+            .card {
+                padding: 1.25rem;
+                border-radius: 0.75rem;
+            }
+            
+            .data-grid {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+            
+            .quick-actions {
+                bottom: calc(1rem + var(--safe-area-inset-bottom));
+                right: 1rem;
+                flex-direction: row;
+                gap: 0.5rem;
+            }
+
+            .quick-action-btn {
+                width: 44px;
+                height: 44px;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-bar {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                padding: 1rem;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+
+            .form-input {
+                padding-left: 3rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.75rem;
+            }
+            
+            .session-timer {
+                position: fixed;
+                top: auto;
+                bottom: calc(4rem + var(--safe-area-inset-bottom));
+                right: 1rem;
+                font-size: 0.75rem;
+                padding: 0.5rem 1rem;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .nav-menu {
+                display: none;
+                position: fixed;
+                top: calc(60px + var(--safe-area-inset-top));
+                left: 0;
+                right: 0;
+                background: rgba(10, 14, 39, 0.98);
+                flex-direction: column;
+                padding: 1rem;
+                border-bottom: 1px solid var(--border);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                animation: slideDown 0.3s ease;
+            }
+
+            @keyframes slideDown {
+                from {
+                    transform: translateY(-100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+            
+            .nav-menu.active {
+                display: flex;
+            }
+            
+            .nav-item {
+                width: 100%;
+                text-align: left;
+                padding: 0.75rem 1rem;
+                margin-bottom: 0.25rem;
+            }
+
+            .data-value {
+                font-size: 1rem;
+            }
+
+            .highlight-value {
+                font-size: 1.5rem;
+            }
+
+            .card-title {
+                font-size: 1.1rem;
+            }
+
+            .data-item {
+                padding: 1rem;
+            }
+
+            .upload-zone {
+                padding: 2rem 1rem;
+            }
+
+            .upload-icon {
+                font-size: 2rem;
+            }
+        }
+
+        /* Small mobile devices */
+        @media (max-width: 375px) {
+            .nav-logo {
+                font-size: 1.2rem;
+            }
+
+            .btn {
+                padding: 0.875rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Keyboard Focus Styles */
+        *:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
         }
 
         /* Print Styles */
@@ -799,195 +1128,54 @@
             }
         }
 
-        /* Mobile Optimization */
-        @media (max-width: 768px) {
-            .nav-container {
-                padding: 1rem;
-                flex-wrap: wrap;
-            }
-            
-            .nav-badge {
-                display: none;
-            }
+        /* Light theme */
+        body.light-theme {
+            --bg-dark: #f5f7fa;
+            --bg-card: #ffffff;
+            --bg-hover: #e9ecef;
+            --border: rgba(0, 0, 0, 0.1);
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --text-muted: #adb5bd;
+        }
 
-            .user-info {
-                display: none;
-            }
-            
-            .main-content {
-                padding: 80px 1rem 1rem;
-            }
-            
-            .card {
-                padding: 1.5rem;
-            }
-            
-            .data-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .quick-actions {
-                bottom: 1rem;
-                right: 1rem;
-            }
-            
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .action-bar {
-                flex-direction: column;
-            }
-            
-            .btn {
-                width: 100%;
-            }
-            
-            .search-box {
-                flex-direction: column;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            
-            .session-timer {
-                position: static;
-                margin-bottom: 1rem;
-                font-size: 0.75rem;
-            }
-            
-            .nav-menu {
-                width: 100%;
-                justify-content: space-between;
-            }
-            
-            .nav-item {
-                padding: 0.5rem;
-                font-size: 0.8rem;
+        /* Accessibility improvements */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
             }
         }
 
-        /* Keyboard Focus Styles */
-        *:focus-visible {
-            outline: 2px solid var(--primary);
-            outline-offset: 2px;
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* Page Transitions */
-        .page-view {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .page-view.active {
-            display: block;
-        }
-
-        /* Tooltip */
-        .tooltip {
-            position: relative;
-        }
-
-        .tooltip::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--bg-hover);
-            color: var(--text-primary);
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: var(--transition);
-            z-index: 1000;
-        }
-
-        .tooltip:hover::after {
-            opacity: 1;
-            bottom: calc(100% + 0.5rem);
-        }
-
-        /* Error Message */
-        .error-text {
-            color: var(--danger);
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
-            display: none;
-        }
-
-        .error-text.show {
-            display: block;
-        }
-
-        /* Menu Toggle for Mobile */
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--text-primary);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        @media (max-width: 768px) {
-            .menu-toggle {
-                display: block;
-            }
-            
-            .nav-menu {
-                display: none;
-                position: absolute;
-                top: 70px;
-                left: 0;
-                right: 0;
-                background: rgba(10, 14, 39, 0.95);
-                flex-direction: column;
-                padding: 1rem;
-                border-bottom: 1px solid var(--border);
-            }
-            
-            .nav-menu.active {
-                display: flex;
-            }
-            
-            .nav-item {
-                width: 100%;
-                text-align: center;
-                margin-bottom: 0.5rem;
+        /* High contrast mode */
+        @media (prefers-contrast: high) {
+            :root {
+                --primary: #0056e0;
+                --text-primary: #ffffff;
+                --text-secondary: #e0e0e0;
+                --border: rgba(255, 255, 255, 0.3);
             }
         }
     </style>
 </head>
 <body>
-    <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-spinner"></div>
     </div>
 
-    <!-- Session Timer -->
     <div class="session-timer" id="sessionTimer">
         Session expires in: <span id="sessionTime">30:00</span>
     </div>
 
-    <!-- Professional Navigation -->
     <header class="main-header no-print">
         <nav class="nav-container">
             <div class="nav-brand">
                 <div class="nav-logo">MSC</div>
                 <span class="nav-badge">SECURE</span>
             </div>
-            <button class="menu-toggle" id="menuToggle">
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
                 <i class="fas fa-bars"></i>
             </button>
             <div class="nav-menu" id="navMenu">
@@ -1011,7 +1199,6 @@
         </nav>
     </header>
 
-    <!-- Quick Actions -->
     <div class="quick-actions no-print">
         <button class="quick-action-btn tooltip" data-tooltip="Print Report" id="print-btn" aria-label="Print" disabled>
             <i class="fas fa-print"></i>
@@ -1027,9 +1214,7 @@
         </button>
     </div>
 
-    <!-- Main Content -->
     <main class="main-content">
-        <!-- LOGIN VIEW -->
         <div id="login-view" class="page-view active">
             <div class="card login-card">
                 <div class="card-header">
@@ -1056,12 +1241,11 @@
                     </button>
                 </form>
                 <p style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-size: 0.875rem;">
-                    Contact IT support for access: support@msc.com
+                    Demo: admin/Admin@2025 or agent/Agent@2025
                 </p>
             </div>
         </div>
 
-        <!-- AGENT PORTAL -->
         <div id="portal-view" class="page-view">
             <div class="print-container">
                 <header style="text-align: center; margin-bottom: 2rem;">
@@ -1177,7 +1361,6 @@
             </div>
         </div>
 
-        <!-- ADMIN PANEL -->
         <div id="admin-view" class="page-view">
             <header style="text-align: center; margin-bottom: 2rem;">
                 <h1 style="font-size: 2rem; font-weight: 700;">Admin Control Center</h1>
@@ -1188,7 +1371,6 @@
 
             <div id="admin-status" class="status-message"></div>
 
-            <!-- Statistics Dashboard -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-value" id="total-records">0</div>
@@ -1208,7 +1390,6 @@
                 </div>
             </div>
 
-            <!-- Upload Section -->
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">
@@ -1228,7 +1409,6 @@
                 </div>
             </div>
 
-            <!-- Manual Entry -->
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">
@@ -1237,14 +1417,14 @@
                 </div>
                 <form id="manual-form">
                     <div class="form-grid">
-                        <input type="text" class="form-input" name="BL_Number" placeholder="BL Number *" pattern="[A-Za-z0-9]+" required>
-                        <input type="text" class="form-input" name="Name of Vessel" placeholder="Name of Vessel *" required>
-                        <input type="text" class="form-input" name="Voyage Number" placeholder="Voyage Number">
-                        <input type="date" class="form-input" name="Date of Arrival" placeholder="Date of Arrival">
-                        <input type="date" class="form-input" name="From Date" placeholder="From Date">
-                        <input type="date" class="form-input" name="To Date" placeholder="To Date">
-                        <input type="number" class="form-input" name="Total Demurrage amount" placeholder="Total Amount (USD)" step="0.01" min="0">
-                        <input type="text" class="form-input" name="Container_ID" placeholder="Container ID">
+                        <input type="text" class="form-input-full" name="BL_Number" placeholder="BL Number *" pattern="[A-Za-z0-9]+" required>
+                        <input type="text" class="form-input-full" name="Name of Vessel" placeholder="Name of Vessel *" required>
+                        <input type="text" class="form-input-full" name="Voyage Number" placeholder="Voyage Number">
+                        <input type="date" class="form-input-full" name="Date of Arrival" placeholder="Date of Arrival">
+                        <input type="date" class="form-input-full" name="From Date" placeholder="From Date">
+                        <input type="date" class="form-input-full" name="To Date" placeholder="To Date">
+                        <input type="number" class="form-input-full" name="Total Demurrage amount" placeholder="Total Amount (USD)" step="0.01" min="0">
+                        <input type="text" class="form-input-full" name="Container_ID" placeholder="Container ID">
                     </div>
                     <div class="action-bar">
                         <button type="submit" class="btn">
@@ -1257,7 +1437,6 @@
                 </form>
             </div>
 
-            <!-- Data Management -->
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">
@@ -1280,7 +1459,6 @@
                 </div>
             </div>
 
-            <!-- Data Table View -->
             <div class="card" id="data-view" style="display: none;">
                 <div class="card-header">
                     <h2 class="card-title">
@@ -1305,7 +1483,6 @@
             </div>
         </div>
 
-        <!-- HELP VIEW -->
         <div id="help-view" class="page-view">
             <div class="card">
                 <div class="card-header">
@@ -1350,21 +1527,11 @@
                         Phone: <strong>+1-800-MSC-SHIP</strong><br>
                         Available: Monday-Friday, 8:00 AM - 6:00 PM EST
                     </p>
-
-                    <h3 style="color: var(--primary-light); margin: 2rem 0 1rem;">Security Guidelines</h3>
-                    <ul style="color: var(--text-secondary); line-height: 2; list-style-position: inside;">
-                        <li>Never share your login credentials.</li>
-                        <li>Always logout when finished.</li>
-                        <li>Report suspicious activity immediately.</li>
-                        <li>Use strong passwords with mixed characters.</li>
-                        <li>Enable two-factor authentication when available.</li>
-                    </ul>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- External Scripts with Integrity Checks -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" integrity="sha512-dfX5uYVXzyU8+KHqj8bjo7UkOdg18PaOtpa48djpNbZHwExddghZ+ZmzWT06R5v6NSk3ZUfsH6FNEDepLx9hPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" integrity="sha512-r22gChDnGvBylk90+2e/ycr3RVrDi8DIOkIGNhJlKfuyQM4tIRAI062MaV8sfjQKYVGjOBaZBOA87z+IhZE9DA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSZNvyHOLNbTdILn7S1CiGupRSp8OUPZG/1dXEjJEnxFVVbZeoO2TRmAs7bS+pNldApcvY+zQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -1403,6 +1570,8 @@
                 setupKeyboardShortcuts();
                 setupFileUpload();
                 setupMobileMenu();
+                setupSmoothScroll();
+                loadTheme(); // Load saved theme preference
                 
                 if (State.data.length === 0) {
                     State.data = [
@@ -1411,6 +1580,18 @@
                     ];
                     saveData();
                 }
+            }
+
+            function setupSmoothScroll() {
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const target = document.querySelector(this.getAttribute('href'));
+                        if(target) {
+                            target.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    });
+                });
             }
 
             function encrypt(text) { 
@@ -1473,7 +1654,14 @@
                 document.getElementById('userName').textContent = user.username;
                 document.getElementById('userAvatar').textContent = user.username[0].toUpperCase();
                 document.getElementById('sessionTimer').classList.add('active');
-                document.querySelectorAll('.nav-item, .quick-action-btn').forEach(el => el.disabled = false);
+                
+                // Enable navigation buttons after login
+                document.querySelectorAll('.nav-item').forEach(el => {
+                    if(el.id !== 'logoutBtn') el.disabled = false;
+                });
+                
+                // Enable quick action buttons
+                document.querySelectorAll('.quick-action-btn').forEach(el => el.disabled = false);
             }
 
             function updateSessionTimer() {
@@ -1513,7 +1701,18 @@
                 localStorage.removeItem('msc_session');
                 document.getElementById('userInfo').style.display = 'none';
                 document.getElementById('sessionTimer').classList.remove('active');
-                document.querySelectorAll('.nav-item, .quick-action-btn').forEach(el => el.disabled = true);
+                
+                // Disable navigation buttons after logout
+                document.querySelectorAll('.nav-item').forEach(el => {
+                    if(el.id !== 'nav-portal' && el.id !== 'nav-admin' && el.id !== 'nav-help') return;
+                    el.disabled = true;
+                });
+                
+                // Disable quick action buttons
+                document.querySelectorAll('.quick-action-btn').forEach(el => {
+                    if(el.id !== 'theme-btn') el.disabled = true;
+                });
+                
                 switchView('login');
                 showStatus(message, 'info');
                 document.getElementById('password').value = '';
@@ -1583,10 +1782,12 @@
                 document.getElementById('theme-btn').addEventListener('click', toggleTheme);
                 
                 // Extend session on user activity
-                document.addEventListener('mousemove', extendSession, { passive: true });
-                document.addEventListener('keydown', extendSession, { passive: true });
-                document.addEventListener('click', extendSession, { passive: true });
-                document.addEventListener('touchstart', extendSession, { passive: true });
+                const extendEvents = ['mousemove', 'keydown', 'click', 'touchstart', 'scroll'];
+                extendEvents.forEach(event => {
+                    document.addEventListener(event, () => {
+                        if(State.user) extendSession();
+                    }, { passive: true });
+                });
             }
 
             function setupMobileMenu() {
@@ -1596,6 +1797,13 @@
                 if (menuToggle && navMenu) {
                     menuToggle.addEventListener('click', () => {
                         navMenu.classList.toggle('active');
+                    });
+                    
+                    // Close menu when clicking outside
+                    document.addEventListener('click', (e) => {
+                        if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                            navMenu.classList.remove('active');
+                        }
                     });
                 }
             }
@@ -1631,7 +1839,23 @@
                 if (document.body.classList.contains('light-theme')) {
                     themeIcon.classList.remove('fa-moon');
                     themeIcon.classList.add('fa-sun');
+                    localStorage.setItem('theme', 'light');
                 } else {
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                    localStorage.setItem('theme', 'dark');
+                }
+            }
+            
+            function loadTheme() {
+                const savedTheme = localStorage.getItem('theme');
+                const themeIcon = document.querySelector('#theme-btn i');
+                if (savedTheme === 'light') {
+                    document.body.classList.add('light-theme');
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                } else {
+                    document.body.classList.remove('light-theme');
                     themeIcon.classList.remove('fa-sun');
                     themeIcon.classList.add('fa-moon');
                 }
@@ -1647,19 +1871,42 @@
                     return;
                 }
                 
-                document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                
-                document.getElementById(`${view}-view`).classList.add('active');
-                if (view !== 'login') {
-                    document.getElementById(`nav-${view}`).classList.add('active');
+                // Fade out current view
+                const currentViewEl = document.querySelector('.page-view.active');
+                if(currentViewEl) {
+                    currentViewEl.style.opacity = '0';
+                    currentViewEl.style.transform = 'translateY(20px)';
                 }
-                State.currentView = view;
-                if (view === 'admin') updateStats();
-                extendSession();
                 
-                // Close mobile menu when switching views
-                document.getElementById('navMenu').classList.remove('active');
+                setTimeout(() => {
+                    document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
+                    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                    
+                    // Activate new view
+                    const newViewEl = document.getElementById(`${view}-view`);
+                    if(newViewEl) {
+                        newViewEl.classList.add('active');
+                        setTimeout(() => {
+                            newViewEl.style.opacity = '1';
+                            newViewEl.style.transform = 'translateY(0)';
+                        }, 50);
+                    }
+                    
+                    if (view !== 'login') {
+                        const navBtn = document.getElementById(`nav-${view}`);
+                        if(navBtn) navBtn.classList.add('active');
+                    }
+                    
+                    State.currentView = view;
+                    if (view === 'admin') updateStats();
+                    if(State.user) extendSession();
+                    
+                    // Close mobile menu when switching views
+                    document.getElementById('navMenu').classList.remove('active');
+                    
+                    // Scroll to top
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 300);
             }
 
             function handleSearch(e) {
@@ -1720,7 +1967,7 @@
             function hideResults() {
                 const container = document.getElementById('results-container');
                 container.classList.remove('visible');
-                setTimeout(() => container.style.display = 'none', 300);
+                setTimeout(() => container.style.display = 'none', 500);
             }
 
             function addToRecentSearches(blNumber) {
@@ -1897,13 +2144,19 @@
             function formatDate(dateStr) { 
                 if (!dateStr) return 'N/A'; 
                 try { 
+                    // Handle potential Excel date serial numbers
+                    if (!isNaN(dateStr) && dateStr > 10000 && dateStr < 99999) {
+                        const excelEpoch = new Date(1899, 11, 30);
+                        const date = new Date(excelEpoch.getTime() + dateStr * 24 * 60 * 60 * 1000);
+                        return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+                    }
                     return new Date(dateStr).toLocaleDateString('en-US', { 
                         year: 'numeric', 
                         month: 'short', 
                         day: 'numeric' 
                     }); 
                 } catch (e) { 
-                    return 'Invalid Date'; 
+                    return sanitizeInput(dateStr); // Return original string if parsing fails
                 } 
             }
             
@@ -1922,7 +2175,9 @@
                 statusEl.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i> ${message}`;
                 statusEl.className = `status-message status-${type}`;
                 statusEl.style.display = 'block';
-                setTimeout(() => statusEl.style.display = 'none', 5000);
+                setTimeout(() => {
+                    if(statusEl) statusEl.style.display = 'none';
+                }, 5000);
             }
 
             function showLoading(show = true) { 
@@ -1945,6 +2200,7 @@
                 showStatus('Data exported successfully', 'success');
             }
 
+D
             function backupData() {
                 if (State.user?.role !== 'admin') { 
                     showStatus('Admin access required', 'error'); 
